@@ -1,0 +1,18 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+
+# Large attachment archives (>100MB exceeds GitHub push limit)
+*.zip
+public/assets/
+
+# Extracted source repositories & nested git directories
+glowlink-native/
+glowlink-main/
+bun.lock*
+
