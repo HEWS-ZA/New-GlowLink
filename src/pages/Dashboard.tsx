@@ -8,10 +8,10 @@ import {
   DollarSign,
   Users,
   TrendingUp,
-  LogOut,
   Sparkles,
   CheckCircle,
   XCircle,
+  MapPin,
   Clock,
 } from "lucide-react";
 import {
@@ -26,12 +26,11 @@ import { toast } from "sonner";
 import {
   getStoredBookings,
   updateBookingStatus,
-  cancelBooking,
   getStoredCustomers,
   Booking,
   CustomerRecord,
 } from "@/services/bookingStore";
-import { getAuthState, logoutArtisan } from "@/services/authStore";
+import { useAuth } from "@/services/authStore";
 import { triggerHaptic } from "@/services/haptics";
 
 const Dashboard = () => {
@@ -39,33 +38,27 @@ const Dashboard = () => {
   const [activeTab, setActiveTab] = useState<"overview" | "customers">("overview");
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [customers, setCustomers] = useState<CustomerRecord[]>([]);
-  const { user } = getAuthState();
+  const { isAuthenticated, isResolved, user } = useAuth();
+
+  // Route protection: if auth resolves to false (or if user signs out in another tab/nav), redirect immediately
+  useEffect(() => {
+    if (isResolved && !isAuthenticated) {
+      navigate("/login", { replace: true });
+    }
+  }, [isResolved, isAuthenticated, navigate]);
 
   useEffect(() => {
-    // If not authenticated in session, set demo session for instant viewing
-    const auth = getAuthState();
-    if (!auth.isAuthenticated) {
-      // Allow demo viewing or let user sign in
-    }
     setBookings(getStoredBookings());
     setCustomers(getStoredCustomers());
   }, []);
-
-  const handleLogout = () => {
-    triggerHaptic(12);
-    logoutArtisan();
-    toast.success("Successfully logged out from Atelier Console.");
-    navigate("/login");
-  };
 
   const handleStatusChange = (id: string, newStatus: Booking["status"]) => {
     triggerHaptic(10);
     updateBookingStatus(id, newStatus);
     setBookings(getStoredBookings());
-    toast.success(`Booking status changed to ${newStatus}`);
+    toast.success(`Booking status updated to ${newStatus}`);
   };
 
-  // Dynamic calculations
   const upcomingCount = bookings.filter((b) => b.status === "Confirmed" || b.status === "Pending").length;
   const totalRevenue = bookings
     .filter((b) => b.status === "Confirmed" || b.status === "Completed")
@@ -75,56 +68,74 @@ const Dashboard = () => {
     }, 18500);
 
   const stats = [
-    { icon: Calendar, label: "Upcoming Appointments", value: `${upcomingCount}`, color: "text-neutral-900" },
-    { icon: DollarSign, label: "Calculated Revenue", value: `R${totalRevenue.toLocaleString()}`, color: "text-emerald-600" },
-    { icon: Users, label: "Total Clientele", value: `${customers.length}`, color: "text-neutral-900" },
-    { icon: TrendingUp, label: "Atelier Profile Views", value: "2,340", color: "text-amber-600" },
+    { icon: Calendar, label: "Upcoming Bookings", value: `${upcomingCount}`, color: "text-[#501854] dark:text-[#D4C7E1]" },
+    { icon: DollarSign, label: "Calculated Revenue", value: `R${totalRevenue.toLocaleString()}`, color: "text-[#DB2777]" },
+    { icon: Users, label: "Total Clientele", value: `${customers.length}`, color: "text-[#501854] dark:text-[#D4C7E1]" },
+    { icon: TrendingUp, label: "Atelier Views", value: "2,340", color: "text-[#8C3B8A] dark:text-[#DB2777]" },
   ];
 
+  if (!isResolved || !isAuthenticated) {
+    return <div className="min-h-screen bg-white dark:bg-[#17111D]" />;
+  }
+
   return (
-    <div className="bg-[#FAF8F5] text-neutral-900 min-h-screen selection:bg-neutral-900 selection:text-white">
+    <div className="bg-white dark:bg-[#17111D] text-[#501854] dark:text-[#D4C7E1] min-h-screen selection:bg-[#DB2777] selection:text-white transition-colors duration-300">
       <Header />
 
-      <section className="pt-36 pb-20 px-6 md:px-12 border-b border-neutral-200/70">
+      <section className="pt-24 sm:pt-32 md:pt-36 pb-24 md:pb-20 px-3.5 sm:px-6 md:px-12 border-b border-[#EFBDEB] dark:border-[#3B3237]">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-10">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/80 border border-neutral-200/80 shadow-xs mb-2">
-                <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                <span className="text-xs uppercase tracking-[0.2em] text-neutral-600 font-semibold">
-                  Artisan Console
+          {/* Rebalanced Header (Removed duplicate Sign Out; intentional balanced layout) */}
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-5 mb-8 sm:mb-10">
+            <div className="space-y-2 min-w-0">
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-2xs">
+                <Sparkles className="w-3.5 h-3.5 text-[#DB2777]" />
+                <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] text-[#501854] dark:text-[#D4C7E1] font-semibold">
+                  Master Atelier Console
                 </span>
               </div>
-              <h1 className="text-3xl md:text-5xl font-serif text-neutral-950 tracking-tight">
-                Master Atelier <span className="italic font-normal">Dashboard</span>
+              <h1 className="text-2xl sm:text-3xl md:text-5xl font-serif text-[#501854] dark:text-[#D4C7E1] tracking-tight leading-tight">
+                Atelier Schedule & <span className="italic font-normal text-[#DB2777]">Clientele</span>
               </h1>
-              <p className="text-xs text-neutral-500 mt-1">
-                Connected as <span className="font-semibold text-neutral-900">{user?.name || "Thandi Mthembu (Master Artisan)"}</span>
+              <p className="text-xs sm:text-sm text-[#7E4882] dark:text-[#A695B8] font-light truncate max-w-xl">
+                Connected artisan: <span className="font-semibold text-[#501854] dark:text-[#D4C7E1]">{user?.name || "Thandi Mthembu (Master Stylist)"}</span>
               </p>
             </div>
 
-            <div className="flex items-center gap-4">
-              <button
-                onClick={handleLogout}
-                className="flex items-center gap-2 border border-neutral-300 text-neutral-700 hover:text-neutral-950 px-4 py-2 rounded-full text-xs uppercase tracking-widest font-semibold transition-all bg-white hover:bg-neutral-50 shadow-2xs active:scale-95"
-              >
-                <LogOut size={14} />
-                <span>Sign Out</span>
-              </button>
+            {/* Rebalanced Atelier Status Card (replaces removed sign out button) */}
+            <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
+              <div className="px-3.5 py-2 rounded-2xl bg-[#FAF2FA] dark:bg-[#241C2B] border border-[#EFBDEB] dark:border-[#3B3237] flex items-center gap-2.5 shadow-2xs">
+                <span className="relative flex h-2.5 w-2.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                </span>
+                <div className="text-left">
+                  <p className="text-[11px] font-semibold text-[#501854] dark:text-[#D4C7E1] leading-none">
+                    Studio Active
+                  </p>
+                  <p className="text-[9px] uppercase tracking-wider text-[#7E4882] dark:text-[#A695B8] leading-tight mt-0.5">
+                    Johannesburg Hub
+                  </p>
+                </div>
+              </div>
+
+              <div className="px-3.5 py-2 rounded-2xl bg-[#FAF2FA] dark:bg-[#241C2B] border border-[#EFBDEB] dark:border-[#3B3237] flex items-center gap-2 text-xs text-[#501854] dark:text-[#D4C7E1] shadow-2xs">
+                <Clock className="w-3.5 h-3.5 text-[#DB2777]" />
+                <span className="text-[11px] font-medium">Real-Time Sync</span>
+              </div>
             </div>
           </div>
 
-          {/* Navigation Tabs */}
-          <div className="flex gap-2.5 mb-10 bg-neutral-200/60 p-1.5 rounded-full w-full sm:w-fit overflow-x-auto no-scrollbar">
+          {/* Navigation Tabs (Smooth touch scrolling, no overflow) */}
+          <div className="flex gap-2 mb-6 sm:mb-8 bg-[#FAF2FA] dark:bg-[#372E3E] p-1 rounded-full w-full sm:w-fit border border-[#EFBDEB] dark:border-[#3B3237] overflow-x-auto no-scrollbar">
             <button
               onClick={() => {
                 triggerHaptic(8);
                 setActiveTab("overview");
               }}
-              className={`whitespace-nowrap px-6 py-2 rounded-full text-xs uppercase tracking-widest font-semibold transition-all ${
+              className={`flex-1 sm:flex-initial whitespace-nowrap px-4 sm:px-6 py-2.5 rounded-full text-xs uppercase tracking-widest font-semibold transition-all min-h-[44px] flex items-center justify-center ${
                 activeTab === "overview"
-                  ? "bg-white text-neutral-950 shadow-xs"
-                  : "text-neutral-600 hover:text-neutral-950"
+                  ? "bg-[#501854] dark:bg-[#DB2777] text-white shadow-xs"
+                  : "text-[#7E4882] dark:text-[#A695B8] hover:text-[#501854] dark:hover:text-[#D4C7E1]"
               }`}
             >
               Atelier Overview
@@ -134,86 +145,157 @@ const Dashboard = () => {
                 triggerHaptic(8);
                 setActiveTab("customers");
               }}
-              className={`whitespace-nowrap px-6 py-2 rounded-full text-xs uppercase tracking-widest font-semibold transition-all ${
+              className={`flex-1 sm:flex-initial whitespace-nowrap px-4 sm:px-6 py-2.5 rounded-full text-xs uppercase tracking-widest font-semibold transition-all min-h-[44px] flex items-center justify-center ${
                 activeTab === "customers"
-                  ? "bg-white text-neutral-950 shadow-xs"
-                  : "text-neutral-600 hover:text-neutral-950"
+                  ? "bg-[#501854] dark:bg-[#DB2777] text-white shadow-xs"
+                  : "text-[#7E4882] dark:text-[#A695B8] hover:text-[#501854] dark:hover:text-[#D4C7E1]"
               }`}
             >
-              Clientele CRM ({customers.length})
+              Clientele ({customers.length})
             </button>
           </div>
 
           {activeTab === "overview" && (
-            <div className="space-y-12 animate-in fade-in duration-300">
-              {/* Stats Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <div className="space-y-6 sm:space-y-10 animate-in fade-in duration-300">
+              {/* Stats Grid - 1 col on tiny mobile (320/360), 2 col on sm, 4 col on lg */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-5">
                 {stats.map((s, idx) => (
-                  <div key={idx} className="p-6 rounded-3xl bg-white border border-neutral-200/80 shadow-2xs">
-                    <div className="flex items-center justify-between mb-3">
-                      <span className="text-xs uppercase tracking-wider text-neutral-500 font-medium">{s.label}</span>
-                      <s.icon size={18} className="text-neutral-400" />
+                  <div key={idx} className="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white dark:bg-[#241C2B] border border-[#EFBDEB] dark:border-[#3B3237] shadow-2xs flex sm:block items-center justify-between">
+                    <div className="flex items-center justify-between mb-0 sm:mb-3">
+                      <span className="text-[11px] sm:text-xs uppercase tracking-wider text-[#7E4882] dark:text-[#A695B8] font-medium line-clamp-1">{s.label}</span>
+                      <s.icon size={16} className="hidden sm:block text-[#8C3B8A] dark:text-[#A695B8] shrink-0" />
                     </div>
-                    <div className={`font-serif text-3xl font-medium ${s.color}`}>
+                    <div className={`font-serif text-2xl sm:text-3xl font-medium ${s.color}`}>
                       {s.value}
                     </div>
                   </div>
                 ))}
               </div>
 
-              {/* Bookings Table */}
-              <div className="bg-white rounded-3xl border border-neutral-200/80 p-6 md:p-8 shadow-xs">
-                <div className="flex justify-between items-center mb-6">
+              {/* Bookings Card Container */}
+              <div className="bg-white dark:bg-[#241C2B] rounded-2xl sm:rounded-3xl border border-[#EFBDEB] dark:border-[#3B3237] p-4 sm:p-6 md:p-8 shadow-xs">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
                   <div>
-                    <span className="text-[10px] uppercase tracking-widest text-neutral-500 block mb-1 font-semibold">
+                    <span className="text-[10px] uppercase tracking-widest text-[#DB2777] block mb-0.5 font-semibold">
                       Live Schedule
                     </span>
-                    <h2 className="font-serif text-2xl text-neutral-950">Appointments Roster</h2>
+                    <h2 className="font-serif text-xl sm:text-2xl text-[#501854] dark:text-[#D4C7E1]">Appointments Roster</h2>
                   </div>
-                  <span className="text-xs text-neutral-500 font-light">
-                    {bookings.length} reservations on file
+                  <span className="text-xs text-[#7E4882] dark:text-[#A695B8] font-light">
+                    {bookings.length} reservations
                   </span>
                 </div>
 
-                <div className="overflow-x-auto">
+                {/* Mobile Card List View (< md) - Labelled, tappable buttons with 44px touch targets */}
+                <div className="md:hidden space-y-3.5">
+                  {bookings.map((booking) => (
+                    <div key={booking.id} className="p-4 rounded-2xl bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] space-y-3">
+                      <div className="flex justify-between items-start gap-2">
+                        <div className="min-w-0 flex-1">
+                          <h4 className="font-semibold text-sm text-[#501854] dark:text-[#D4C7E1] truncate">{booking.clientName}</h4>
+                          <p className="text-xs text-[#7E4882] dark:text-[#A695B8] font-light truncate">{booking.serviceName}</p>
+                          <span className="font-serif font-medium text-xs text-[#501854] dark:text-[#D4C7E1]">{booking.servicePrice}</span>
+                        </div>
+                        <span
+                          className={`inline-flex items-center px-2.5 py-1 rounded-full text-[10px] uppercase tracking-wider font-semibold shrink-0 ${
+                            booking.status === "Confirmed"
+                              ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800"
+                              : booking.status === "Pending"
+                              ? "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-800"
+                              : booking.status === "Completed"
+                              ? "bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-300 dark:border-blue-800"
+                              : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-300"
+                          }`}
+                        >
+                          {booking.status}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-1.5 text-xs text-[#7E4882] dark:text-[#A695B8] pt-1 border-t border-[#EFBDEB]/60 dark:border-[#3B3237]">
+                        <Calendar size={13} className="text-[#DB2777] shrink-0" />
+                        <span className="truncate">{booking.date} • {booking.time}</span>
+                      </div>
+
+                      {/* Labelled, Touch-Friendly Action Buttons (>= 44px min-h touch target) */}
+                      <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-[#EFBDEB]/60 dark:border-[#3B3237]">
+                        {booking.status !== "Confirmed" && booking.status !== "Cancelled" && (
+                          <button
+                            type="button"
+                            onClick={() => handleStatusChange(booking.id, "Confirmed")}
+                            className="flex-1 min-h-[44px] px-3 py-2 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-all active:scale-95 shadow-xs flex items-center justify-center gap-1.5"
+                            aria-label={`Confirm booking for ${booking.clientName}`}
+                          >
+                            <CheckCircle size={14} />
+                            <span>Confirm</span>
+                          </button>
+                        )}
+                        {booking.status === "Confirmed" && (
+                          <button
+                            type="button"
+                            onClick={() => handleStatusChange(booking.id, "Completed")}
+                            className="flex-1 min-h-[44px] px-3 py-2 text-xs font-semibold bg-[#501854] dark:bg-[#DB2777] hover:opacity-90 rounded-xl text-white active:scale-95 flex items-center justify-center gap-1.5 shadow-xs"
+                            aria-label={`Mark completed for ${booking.clientName}`}
+                          >
+                            <CheckCircle size={14} />
+                            <span>Complete</span>
+                          </button>
+                        )}
+                        {booking.status !== "Cancelled" && (
+                          <button
+                            type="button"
+                            onClick={() => handleStatusChange(booking.id, "Cancelled")}
+                            className="min-h-[44px] px-3 py-2 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/30 rounded-xl border border-rose-200 dark:border-rose-900/60 transition-colors flex items-center justify-center gap-1.5 active:scale-95"
+                            aria-label={`Cancel booking for ${booking.clientName}`}
+                          >
+                            <XCircle size={14} />
+                            <span>Cancel</span>
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Desktop Table View (>= md) */}
+                <div className="hidden md:block overflow-x-auto">
                   <Table>
                     <TableHeader>
-                      <TableRow>
-                        <TableHead>Client</TableHead>
-                        <TableHead>Service</TableHead>
-                        <TableHead>Date & Time</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
+                      <TableRow className="border-b border-[#EFBDEB] dark:border-[#3B3237]">
+                        <TableHead className="text-[#501854] dark:text-[#D4C7E1]">Client</TableHead>
+                        <TableHead className="text-[#501854] dark:text-[#D4C7E1]">Service</TableHead>
+                        <TableHead className="text-[#501854] dark:text-[#D4C7E1]">Date & Time</TableHead>
+                        <TableHead className="text-[#501854] dark:text-[#D4C7E1]">Status</TableHead>
+                        <TableHead className="text-right text-[#501854] dark:text-[#D4C7E1]">Actions</TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
                       {bookings.map((booking) => (
-                        <TableRow key={booking.id}>
-                          <TableCell className="font-medium text-neutral-950">
-                            <div>{booking.clientName}</div>
-                            <div className="text-[11px] text-neutral-400 font-light">{booking.clientEmail}</div>
+                        <TableRow key={booking.id} className="border-b border-[#EFBDEB]/60 dark:border-[#3B3237]/60">
+                          <TableCell className="font-medium text-[#501854] dark:text-[#D4C7E1]">
+                            <div className="truncate max-w-[180px]">{booking.clientName}</div>
+                            <div className="text-[11px] text-[#7E4882] dark:text-[#A695B8] font-light truncate max-w-[180px]">{booking.clientEmail}</div>
                           </TableCell>
                           <TableCell>
-                            <div>{booking.serviceName}</div>
-                            <div className="text-[11px] font-serif text-neutral-600">{booking.servicePrice}</div>
+                            <div className="text-[#501854] dark:text-[#D4C7E1] truncate max-w-[180px]">{booking.serviceName}</div>
+                            <div className="text-[11px] font-serif text-[#DB2777]">{booking.servicePrice}</div>
                           </TableCell>
                           <TableCell>
-                            <div className="flex items-center gap-1.5">
-                              <Calendar size={13} className="text-neutral-400" />
-                              <span>{booking.date}</span>
+                            <div className="flex items-center gap-1.5 text-[#501854] dark:text-[#D4C7E1]">
+                              <Calendar size={13} className="text-[#DB2777] shrink-0" />
+                              <span className="whitespace-nowrap">{booking.date}</span>
                             </div>
-                            <div className="text-[11px] text-neutral-500">{booking.time}</div>
+                            <div className="text-[11px] text-[#7E4882] dark:text-[#A695B8]">{booking.time}</div>
                           </TableCell>
                           <TableCell>
                             <span
-                              className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-semibold ${
+                              className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[10px] uppercase tracking-wider font-semibold whitespace-nowrap ${
                                 booking.status === "Confirmed"
-                                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                  ? "bg-emerald-50 dark:bg-emerald-950/40 text-emerald-700 dark:text-emerald-400 border border-emerald-300 dark:border-emerald-800"
                                   : booking.status === "Pending"
-                                  ? "bg-amber-50 text-amber-700 border border-amber-200"
+                                  ? "bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-800"
                                   : booking.status === "Completed"
-                                  ? "bg-blue-50 text-blue-700 border border-blue-200"
-                                  : "bg-neutral-100 text-neutral-600 border border-neutral-200"
+                                  ? "bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-400 border border-blue-300 dark:border-blue-800"
+                                  : "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 border border-neutral-300"
                               }`}
                             >
                               {booking.status}
@@ -223,28 +305,34 @@ const Dashboard = () => {
                             <div className="flex items-center justify-end gap-2">
                               {booking.status !== "Confirmed" && booking.status !== "Cancelled" && (
                                 <button
+                                  type="button"
                                   onClick={() => handleStatusChange(booking.id, "Confirmed")}
-                                  className="p-1.5 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors"
+                                  className="px-3 py-1.5 text-xs font-semibold bg-emerald-600 hover:bg-emerald-700 text-white rounded-full transition-colors flex items-center gap-1 shadow-2xs"
                                   title="Confirm appointment"
                                 >
-                                  <CheckCircle size={16} />
+                                  <CheckCircle size={14} />
+                                  <span>Confirm</span>
                                 </button>
                               )}
                               {booking.status === "Confirmed" && (
                                 <button
+                                  type="button"
                                   onClick={() => handleStatusChange(booking.id, "Completed")}
-                                  className="px-2.5 py-1 text-[11px] font-medium bg-neutral-100 hover:bg-neutral-200 rounded-full text-neutral-800 transition-colors"
+                                  className="px-3 py-1.5 text-xs font-medium bg-[#501854] dark:bg-[#DB2777] text-white hover:opacity-90 rounded-full transition-colors flex items-center gap-1"
                                 >
-                                  Mark Done
+                                  <CheckCircle size={14} />
+                                  <span>Mark Done</span>
                                 </button>
                               )}
                               {booking.status !== "Cancelled" && (
                                 <button
+                                  type="button"
                                   onClick={() => handleStatusChange(booking.id, "Cancelled")}
-                                  className="p-1.5 text-neutral-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-colors"
+                                  className="px-3 py-1.5 text-xs font-medium text-rose-600 dark:text-rose-400 hover:bg-rose-50 dark:hover:bg-rose-950/40 border border-rose-200 dark:border-rose-900/60 rounded-full transition-colors flex items-center gap-1"
                                   title="Cancel appointment"
                                 >
-                                  <XCircle size={16} />
+                                  <XCircle size={14} />
+                                  <span>Cancel</span>
                                 </button>
                               )}
                             </div>
@@ -259,51 +347,78 @@ const Dashboard = () => {
           )}
 
           {activeTab === "customers" && (
-            <div className="bg-white rounded-3xl border border-neutral-200/80 p-6 md:p-8 shadow-xs animate-in fade-in duration-300">
-              <div className="flex justify-between items-center mb-6">
+            <div className="bg-white dark:bg-[#241C2B] rounded-2xl sm:rounded-3xl border border-[#EFBDEB] dark:border-[#3B3237] p-4 sm:p-6 md:p-8 shadow-xs animate-in fade-in duration-300">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2 mb-6">
                 <div>
-                  <span className="text-[10px] uppercase tracking-widest text-neutral-500 block mb-1 font-semibold">
+                  <span className="text-[10px] uppercase tracking-widest text-[#DB2777] block mb-0.5 font-semibold">
                     Atelier CRM
                   </span>
-                  <h2 className="font-serif text-2xl text-neutral-950">Clientele Directory</h2>
+                  <h2 className="font-serif text-xl sm:text-2xl text-[#501854] dark:text-[#D4C7E1]">Clientele Directory</h2>
                 </div>
-                <span className="text-xs text-neutral-500 font-light">
+                <span className="text-xs text-[#7E4882] dark:text-[#A695B8] font-light">
                   {customers.length} high-value clients
                 </span>
               </div>
 
-              <div className="overflow-x-auto">
+              {/* Mobile Card List View (< md) */}
+              <div className="md:hidden space-y-3">
+                {customers.map((c) => (
+                  <div key={c.id} className="p-4 rounded-2xl bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] space-y-2">
+                    <div className="flex justify-between items-start gap-2">
+                      <div className="min-w-0 flex-1">
+                        <h4 className="font-semibold text-sm text-[#501854] dark:text-[#D4C7E1] truncate">{c.name}</h4>
+                        <p className="text-xs text-[#7E4882] dark:text-[#A695B8] truncate">{c.location}</p>
+                        <p className="text-[11px] text-[#8C3B8A] dark:text-[#A695B8] truncate">{c.email}</p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <span className="font-serif font-semibold text-sm text-[#DB2777] block">{c.totalSpent}</span>
+                        <span className="text-[10px] text-[#7E4882] dark:text-[#A695B8]">{c.totalBookings} sessions</span>
+                      </div>
+                    </div>
+                    <div className="flex flex-wrap gap-1 pt-1.5 border-t border-[#EFBDEB]/60 dark:border-[#3B3237]">
+                      {c.services.map((svc, i) => (
+                        <span key={i} className="px-2 py-0.5 rounded-full bg-white dark:bg-[#241C2B] text-[10px] text-[#501854] dark:text-[#D4C7E1] border border-[#EFBDEB] dark:border-[#3B3237]">
+                          {svc}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Desktop Table View (>= md) */}
+              <div className="hidden md:block overflow-x-auto">
                 <Table>
                   <TableHeader>
-                    <TableRow>
-                      <TableHead>Client Name</TableHead>
-                      <TableHead>Contact</TableHead>
-                      <TableHead>Location</TableHead>
-                      <TableHead>Total Sessions</TableHead>
-                      <TableHead>Total Spent</TableHead>
-                      <TableHead>Last Visit</TableHead>
+                    <TableRow className="border-b border-[#EFBDEB] dark:border-[#3B3237]">
+                      <TableHead className="text-[#501854] dark:text-[#D4C7E1]">Client Name</TableHead>
+                      <TableHead className="text-[#501854] dark:text-[#D4C7E1]">Contact</TableHead>
+                      <TableHead className="text-[#501854] dark:text-[#D4C7E1]">Location</TableHead>
+                      <TableHead className="text-[#501854] dark:text-[#D4C7E1]">Total Sessions</TableHead>
+                      <TableHead className="text-[#501854] dark:text-[#D4C7E1]">Total Spent</TableHead>
+                      <TableHead className="text-[#501854] dark:text-[#D4C7E1]">Last Visit</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
                     {customers.map((c) => (
-                      <TableRow key={c.id}>
-                        <TableCell className="font-medium text-neutral-950">
-                          {c.name}
+                      <TableRow key={c.id} className="border-b border-[#EFBDEB]/60 dark:border-[#3B3237]/60">
+                        <TableCell className="font-medium text-[#501854] dark:text-[#D4C7E1]">
+                          <span className="truncate max-w-[180px] block">{c.name}</span>
                         </TableCell>
                         <TableCell>
-                          <div className="text-xs">{c.email}</div>
-                          <div className="text-[11px] text-neutral-400 font-light">{c.phone}</div>
+                          <div className="text-xs text-[#501854] dark:text-[#D4C7E1] truncate max-w-[180px]">{c.email}</div>
+                          <div className="text-[11px] text-[#7E4882] dark:text-[#A695B8] font-light">{c.phone}</div>
                         </TableCell>
-                        <TableCell className="text-xs text-neutral-600">
+                        <TableCell className="text-xs text-[#7E4882] dark:text-[#A695B8]">
                           {c.location}
                         </TableCell>
-                        <TableCell className="text-xs font-semibold text-neutral-900">
+                        <TableCell className="text-xs font-semibold text-[#501854] dark:text-[#D4C7E1]">
                           {c.totalBookings}
                         </TableCell>
-                        <TableCell className="text-xs font-serif font-medium text-neutral-900">
+                        <TableCell className="text-xs font-serif font-medium text-[#DB2777]">
                           {c.totalSpent}
                         </TableCell>
-                        <TableCell className="text-xs text-neutral-500">
+                        <TableCell className="text-xs text-[#7E4882] dark:text-[#A695B8]">
                           {c.lastVisit}
                         </TableCell>
                       </TableRow>

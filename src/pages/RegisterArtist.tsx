@@ -56,35 +56,35 @@ const RegisterArtist = () => {
   };
 
   return (
-    <div className="bg-[#FAF8F5] text-neutral-900 min-h-screen selection:bg-neutral-900 selection:text-white">
+    <div className="bg-white dark:bg-[#17111D] text-[#501854] dark:text-[#D4C7E1] min-h-screen selection:bg-[#DB2777] selection:text-white transition-colors duration-300">
       <Header />
 
-      <section className="pt-36 pb-20 px-6 md:px-12 border-b border-neutral-200/70">
+      <section className="pt-28 sm:pt-36 pb-16 sm:pb-20 px-4 sm:px-6 md:px-12 border-b border-[#EFBDEB] dark:border-[#3B3237]">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-10">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 border border-neutral-200/80 shadow-xs mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span className="text-xs uppercase tracking-[0.2em] text-neutral-600 font-semibold">
+          <div className="text-center mb-8 sm:mb-10">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-xs mb-3">
+              <Sparkles className="w-3.5 h-3.5 text-[#DB2777]" />
+              <span className="text-[11px] uppercase tracking-[0.2em] text-[#501854] dark:text-[#D4C7E1] font-semibold">
                 Atelier Representation
               </span>
             </div>
-            <h1 className="text-3xl md:text-5xl font-serif text-neutral-950 mb-3">
-              Join <span className="italic font-normal">GlowLink</span>
+            <h1 className="text-2xl sm:text-3xl md:text-5xl font-serif text-[#501854] dark:text-[#D4C7E1] mb-3">
+              Join <span className="italic font-normal text-[#DB2777]">GlowLink</span>
             </h1>
-            <p className="text-neutral-600 text-xs md:text-sm font-light">
+            <p className="text-[#7E4882] dark:text-[#A695B8] text-xs md:text-sm font-light">
               Elevate your beauty business across South Africa's premier luxury clientele
             </p>
           </div>
 
           {/* Progress Indicators */}
-          <div className="flex justify-center items-center gap-2 sm:gap-3 mb-12">
+          <div className="flex justify-center items-center gap-2 sm:gap-3 mb-8 sm:mb-12">
             {[1, 2, 3].map((s) => (
               <div key={s} className="flex items-center gap-2 sm:gap-3">
                 <div
                   className={`w-8 h-8 sm:w-9 sm:h-9 rounded-full flex items-center justify-center text-xs font-semibold transition-all ${
                     step >= s
-                      ? "bg-neutral-950 text-white shadow-xs"
-                      : "border border-neutral-300 text-neutral-400 bg-white"
+                      ? "bg-[#501854] dark:bg-[#DB2777] text-white shadow-xs"
+                      : "border border-[#EFBDEB] dark:border-[#3B3237] text-[#8C3B8A] dark:text-[#A695B8] bg-white dark:bg-[#241C2B]"
                   }`}
                 >
                   {s}
@@ -92,7 +92,7 @@ const RegisterArtist = () => {
                 {s < 3 && (
                   <div
                     className={`w-6 sm:w-12 h-0.5 transition-all ${
-                      step > s ? "bg-neutral-950" : "bg-neutral-200"
+                      step > s ? "bg-[#501854] dark:bg-[#DB2777]" : "bg-[#EFBDEB] dark:bg-[#3B3237]"
                     }`}
                   ></div>
                 )}
@@ -100,21 +100,21 @@ const RegisterArtist = () => {
             ))}
           </div>
 
-          <div className="p-8 md:p-12 rounded-3xl border border-neutral-200/80 bg-white shadow-lg">
+          <div className="p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-3xl border border-[#EFBDEB] dark:border-[#3B3237] bg-white dark:bg-[#241C2B] shadow-lg">
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Step 1: Personal Info */}
               {step === 1 && (
                 <div className="space-y-5 animate-in fade-in duration-300">
                   <div className="mb-6">
-                    <span className="text-xs uppercase tracking-widest text-neutral-500 block mb-1 font-semibold">
+                    <span className="text-xs uppercase tracking-widest text-[#DB2777] block mb-1 font-semibold">
                       Step 01
                     </span>
-                    <h2 className="font-serif text-2xl text-neutral-950">Personal Credentials</h2>
+                    <h2 className="font-serif text-2xl text-[#501854] dark:text-[#D4C7E1]">Personal Credentials</h2>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-xs uppercase tracking-widest text-neutral-600 mb-2 font-medium">
+                      <label className="block text-xs uppercase tracking-widest text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
                         First Name
                       </label>
                       <input
@@ -123,12 +123,12 @@ const RegisterArtist = () => {
                         required
                         value={formData.firstName}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-2xl text-xs bg-neutral-50 border border-neutral-300 focus:outline-none"
+                        className="w-full px-4 py-3 rounded-2xl text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] focus:outline-none"
                         placeholder="e.g. Lerato"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs uppercase tracking-widest text-neutral-600 mb-2 font-medium">
+                      <label className="block text-xs uppercase tracking-widest text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
                         Last Name
                       </label>
                       <input
@@ -137,7 +137,7 @@ const RegisterArtist = () => {
                         required
                         value={formData.lastName}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-2xl text-xs bg-neutral-50 border border-neutral-300 focus:outline-none"
+                        className="w-full px-4 py-3 rounded-2xl text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] focus:outline-none"
                         placeholder="e.g. Ndlovu"
                       />
                     </div>
@@ -145,7 +145,7 @@ const RegisterArtist = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-xs uppercase tracking-widest text-neutral-600 mb-2 font-medium">
+                      <label className="block text-xs uppercase tracking-widest text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
                         Email Address
                       </label>
                       <input
@@ -154,12 +154,12 @@ const RegisterArtist = () => {
                         required
                         value={formData.email}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-2xl text-xs bg-neutral-50 border border-neutral-300 focus:outline-none"
+                        className="w-full px-4 py-3 rounded-2xl text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] focus:outline-none"
                         placeholder="artisan@domain.co.za"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs uppercase tracking-widest text-neutral-600 mb-2 font-medium">
+                      <label className="block text-xs uppercase tracking-widest text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
                         Mobile Phone Number
                       </label>
                       <input
@@ -168,14 +168,14 @@ const RegisterArtist = () => {
                         required
                         value={formData.phone}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-2xl text-xs bg-neutral-50 border border-neutral-300 focus:outline-none"
+                        className="w-full px-4 py-3 rounded-2xl text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] focus:outline-none"
                         placeholder="+27 82 000 0000"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-xs uppercase tracking-widest text-neutral-600 mb-2 font-medium">
+                    <label className="block text-xs uppercase tracking-widest text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
                       Create Password
                     </label>
                     <input
@@ -184,7 +184,7 @@ const RegisterArtist = () => {
                       required
                       value={formData.password}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-2xl text-xs bg-neutral-50 border border-neutral-300 focus:outline-none"
+                      className="w-full px-4 py-3 rounded-2xl text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] focus:outline-none"
                       placeholder="Minimum 8 characters"
                     />
                   </div>
@@ -200,7 +200,7 @@ const RegisterArtist = () => {
                         }
                         setStep(2);
                       }}
-                      className="bg-neutral-950 text-white px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:bg-neutral-800 transition-all flex items-center gap-2 shadow-md"
+                      className="bg-[#501854] dark:bg-[#DB2777] text-white px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:opacity-90 transition-all flex items-center gap-2 shadow-md"
                     >
                       <span>Continue to Atelier Info</span>
                       <ArrowRight size={14} />
@@ -213,15 +213,15 @@ const RegisterArtist = () => {
               {step === 2 && (
                 <div className="space-y-5 animate-in fade-in duration-300">
                   <div className="mb-6">
-                    <span className="text-xs uppercase tracking-widest text-neutral-500 block mb-1 font-semibold">
+                    <span className="text-xs uppercase tracking-widest text-[#DB2777] block mb-1 font-semibold">
                       Step 02
                     </span>
-                    <h2 className="font-serif text-2xl text-neutral-950">Atelier Discipline & Reach</h2>
+                    <h2 className="font-serif text-2xl text-[#501854] dark:text-[#D4C7E1]">Atelier Discipline & Reach</h2>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-xs uppercase tracking-widest text-neutral-600 mb-2 font-medium">
+                      <label className="block text-xs uppercase tracking-widest text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
                         Atelier / Business Name
                       </label>
                       <input
@@ -229,19 +229,19 @@ const RegisterArtist = () => {
                         name="businessName"
                         value={formData.businessName}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-2xl text-xs bg-neutral-50 border border-neutral-300 focus:outline-none"
+                        className="w-full px-4 py-3 rounded-2xl text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] focus:outline-none"
                         placeholder="e.g. Ndlovu Haute Coiffure"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs uppercase tracking-widest text-neutral-600 mb-2 font-medium">
+                      <label className="block text-xs uppercase tracking-widest text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
                         Primary Discipline
                       </label>
                       <select
                         name="category"
                         value={formData.category}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-2xl text-xs bg-neutral-50 border border-neutral-300 focus:outline-none"
+                        className="w-full px-4 py-3 rounded-2xl text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] focus:outline-none"
                       >
                         <option value="makeup">Makeup (Bridal & Editorial)</option>
                         <option value="hair-styling">Hair Styling & Couture</option>
@@ -255,7 +255,7 @@ const RegisterArtist = () => {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                      <label className="block text-xs uppercase tracking-widest text-neutral-600 mb-2 font-medium">
+                      <label className="block text-xs uppercase tracking-widest text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
                         Location / Suburb
                       </label>
                       <input
@@ -263,19 +263,19 @@ const RegisterArtist = () => {
                         name="location"
                         value={formData.location}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-2xl text-xs bg-neutral-50 border border-neutral-300 focus:outline-none"
+                        className="w-full px-4 py-3 rounded-2xl text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] focus:outline-none"
                         placeholder="e.g. Camps Bay, Cape Town"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs uppercase tracking-widest text-neutral-600 mb-2 font-medium">
+                      <label className="block text-xs uppercase tracking-widest text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
                         Professional Experience
                       </label>
                       <select
                         name="experience"
                         value={formData.experience}
                         onChange={handleChange}
-                        className="w-full px-4 py-3 rounded-2xl text-xs bg-neutral-50 border border-neutral-300 focus:outline-none"
+                        className="w-full px-4 py-3 rounded-2xl text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] focus:outline-none"
                       >
                         <option value="1-3 Years">1 - 3 Years</option>
                         <option value="3-5 Years">3 - 5 Years</option>
@@ -289,7 +289,7 @@ const RegisterArtist = () => {
                     <button
                       type="button"
                       onClick={() => setStep(1)}
-                      className="border border-neutral-300 text-neutral-700 hover:text-neutral-950 px-6 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold transition-all flex items-center gap-2"
+                      className="border border-[#EFBDEB] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] hover:text-[#DB2777] px-6 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold transition-all flex items-center gap-2"
                     >
                       <ArrowLeft size={14} />
                       <span>Back</span>
@@ -300,7 +300,7 @@ const RegisterArtist = () => {
                         triggerHaptic(10);
                         setStep(3);
                       }}
-                      className="bg-neutral-950 text-white px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:bg-neutral-800 transition-all flex items-center gap-2 shadow-md"
+                      className="bg-[#501854] dark:bg-[#DB2777] text-white px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:opacity-90 transition-all flex items-center gap-2 shadow-md"
                     >
                       <span>Continue to Bio & Portfolio</span>
                       <ArrowRight size={14} />
@@ -313,14 +313,14 @@ const RegisterArtist = () => {
               {step === 3 && (
                 <div className="space-y-5 animate-in fade-in duration-300">
                   <div className="mb-6">
-                    <span className="text-xs uppercase tracking-widest text-neutral-500 block mb-1 font-semibold">
+                    <span className="text-xs uppercase tracking-widest text-[#DB2777] block mb-1 font-semibold">
                       Step 03
                     </span>
-                    <h2 className="font-serif text-2xl text-neutral-950">Atelier Showcase</h2>
+                    <h2 className="font-serif text-2xl text-[#501854] dark:text-[#D4C7E1]">Atelier Showcase</h2>
                   </div>
 
                   <div>
-                    <label className="block text-xs uppercase tracking-widest text-neutral-600 mb-2 font-medium">
+                    <label className="block text-xs uppercase tracking-widest text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
                       Instagram Profile
                     </label>
                     <input
@@ -328,13 +328,13 @@ const RegisterArtist = () => {
                       name="instagram"
                       value={formData.instagram}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-2xl text-xs bg-neutral-50 border border-neutral-300 focus:outline-none"
+                      className="w-full px-4 py-3 rounded-2xl text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] focus:outline-none"
                       placeholder="@yourhandle"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs uppercase tracking-widest text-neutral-600 mb-2 font-medium">
+                    <label className="block text-xs uppercase tracking-widest text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
                       Artisan Bio & Artistic Vision
                     </label>
                     <textarea
@@ -342,15 +342,15 @@ const RegisterArtist = () => {
                       rows={4}
                       value={formData.bio}
                       onChange={handleChange}
-                      className="w-full px-4 py-3 rounded-2xl text-xs bg-neutral-50 border border-neutral-300 focus:outline-none"
+                      className="w-full px-4 py-3 rounded-2xl text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] focus:outline-none"
                       placeholder="Tell clients about your aesthetic approach, certifications, and high-profile work..."
                     />
                   </div>
 
-                  <div className="p-6 border-2 border-dashed border-neutral-300 rounded-3xl text-center bg-neutral-50/50">
-                    <Upload className="w-8 h-8 text-neutral-400 mx-auto mb-2" />
-                    <p className="text-xs font-semibold text-neutral-900 mb-1">Upload Portfolio Samples</p>
-                    <p className="text-[11px] text-neutral-500 font-light">
+                  <div className="p-6 border-2 border-dashed border-[#EFBDEB] dark:border-[#3B3237] rounded-3xl text-center bg-[#FAF2FA]/50 dark:bg-[#372E3E]/30">
+                    <Upload className="w-8 h-8 text-[#8C3B8A] dark:text-[#A695B8] mx-auto mb-2" />
+                    <p className="text-xs font-semibold text-[#501854] dark:text-[#D4C7E1] mb-1">Upload Portfolio Samples</p>
+                    <p className="text-[11px] text-[#7E4882] dark:text-[#A695B8] font-light">
                       PNG, JPG up to 10MB each. High-resolution imagery recommended.
                     </p>
                   </div>
@@ -359,14 +359,14 @@ const RegisterArtist = () => {
                     <button
                       type="button"
                       onClick={() => setStep(2)}
-                      className="border border-neutral-300 text-neutral-700 hover:text-neutral-950 px-6 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold transition-all flex items-center gap-2"
+                      className="border border-[#EFBDEB] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] hover:text-[#DB2777] px-6 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold transition-all flex items-center gap-2"
                     >
                       <ArrowLeft size={14} />
                       <span>Back</span>
                     </button>
                     <button
                       type="submit"
-                      className="bg-neutral-950 text-white px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:bg-neutral-800 transition-all flex items-center gap-2 shadow-md"
+                      className="bg-[#501854] dark:bg-[#DB2777] text-white px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:opacity-90 transition-all flex items-center gap-2 shadow-md"
                     >
                       <Check size={14} />
                       <span>Submit Application</span>

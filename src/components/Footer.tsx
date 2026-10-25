@@ -16,31 +16,49 @@ const Footer = () => {
   };
 
   return (
-    <footer className="bg-[#F5F2EC] text-neutral-600 pt-20 pb-24 md:pb-12 px-6 md:px-12 border-t border-neutral-200/80 mt-16">
+    <footer className="bg-[#FAF2FA] dark:bg-[#17111D] text-[#7E4882] dark:text-[#A695B8] pt-16 sm:pt-20 pb-[calc(6.5rem+env(safe-area-inset-bottom))] md:pb-12 px-4 sm:px-6 md:px-12 border-t border-[#EFBDEB] dark:border-[#3B3237] mt-16 transition-colors duration-300">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 md:gap-8 mb-16">
           {/* Brand */}
           <div className="md:col-span-1">
             <Link
               to="/"
-              className="text-2xl text-neutral-900 tracking-tight font-serif italic mb-4 inline-flex items-center gap-2 group"
+              className="text-2xl text-[#501854] dark:text-[#D4C7E1] tracking-tight font-serif italic mb-4 inline-flex items-center gap-2 group"
             >
-              <div className="w-7 h-7 rounded-full bg-neutral-900 text-white flex items-center justify-center shadow-xs">
-                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+              <div className="w-7 h-7 rounded-full bg-[#501854] dark:bg-[#DB2777] text-white flex items-center justify-center shadow-xs">
+                <Sparkles className="w-3.5 h-3.5 text-pink-200" />
               </div>
               <span className="font-medium">GlowLink</span>
             </Link>
-            <p className="text-sm leading-relaxed mb-6 max-w-xs text-neutral-600 font-light">
+            <p className="text-sm leading-relaxed mb-6 max-w-xs text-[#7E4882] dark:text-[#A695B8] font-light">
               Connecting beauty with mastery across South Africa. Redefining personal aesthetics through curated artisan talent and seamless reservations.
             </p>
-            <div className="flex gap-3 text-neutral-700">
-              <a href="https://instagram.com" target="_blank" rel="noreferrer" className="hover:text-neutral-950 transition-colors p-2.5 rounded-full bg-white/80 border border-neutral-200/60 hover:shadow-xs" aria-label="Instagram">
+            <div className="flex gap-3 text-[#501854] dark:text-[#D4C7E1]">
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#DB2777] transition-colors p-2.5 rounded-full bg-white dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] hover:shadow-xs"
+                aria-label="Instagram"
+              >
                 <Instagram size={16} />
               </a>
-              <a href="https://facebook.com" target="_blank" rel="noreferrer" className="hover:text-neutral-950 transition-colors p-2.5 rounded-full bg-white/80 border border-neutral-200/60 hover:shadow-xs" aria-label="Facebook">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#DB2777] transition-colors p-2.5 rounded-full bg-white dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] hover:shadow-xs"
+                aria-label="Facebook"
+              >
                 <Facebook size={16} />
               </a>
-              <a href="https://twitter.com" target="_blank" rel="noreferrer" className="hover:text-neutral-950 transition-colors p-2.5 rounded-full bg-white/80 border border-neutral-200/60 hover:shadow-xs" aria-label="Twitter">
+              <a
+                href="https://twitter.com"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-[#DB2777] transition-colors p-2.5 rounded-full bg-white dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] hover:shadow-xs"
+                aria-label="Twitter"
+              >
                 <Twitter size={16} />
               </a>
             </div>
@@ -48,27 +66,27 @@ const Footer = () => {
 
           {/* Explore Links */}
           <div>
-            <h4 className="text-neutral-900 text-xs font-semibold uppercase tracking-[0.2em] mb-5">
+            <h4 className="text-[#501854] dark:text-[#D4C7E1] text-xs font-semibold uppercase tracking-[0.2em] mb-5">
               Explore
             </h4>
-            <ul className="space-y-3.5 text-sm font-normal text-neutral-600">
+            <ul className="space-y-3.5 text-sm font-normal text-[#7E4882] dark:text-[#A695B8]">
               <li>
-                <Link to="/search" className="hover:text-neutral-950 transition-colors">
+                <Link to="/search" className="hover:text-[#DB2777] transition-colors">
                   Find Artisans
                 </Link>
               </li>
               <li>
-                <Link to="/how-it-works" className="hover:text-neutral-950 transition-colors">
+                <Link to="/how-it-works" className="hover:text-[#DB2777] transition-colors">
                   The Experience
                 </Link>
               </li>
               <li>
-                <Link to="/pricing" className="hover:text-neutral-950 transition-colors">
+                <Link to="/pricing" className="hover:text-[#DB2777] transition-colors">
                   Membership Plans
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="hover:text-neutral-950 transition-colors">
+                <Link to="/about" className="hover:text-[#DB2777] transition-colors">
                   Our Philosophy
                 </Link>
               </li>
@@ -77,27 +95,27 @@ const Footer = () => {
 
           {/* Artisans Links */}
           <div>
-            <h4 className="text-neutral-900 text-xs font-semibold uppercase tracking-[0.2em] mb-5">
+            <h4 className="text-[#501854] dark:text-[#D4C7E1] text-xs font-semibold uppercase tracking-[0.2em] mb-5">
               For Artisans
             </h4>
-            <ul className="space-y-3.5 text-sm font-normal text-neutral-600">
+            <ul className="space-y-3.5 text-sm font-normal text-[#7E4882] dark:text-[#A695B8]">
               <li>
-                <Link to="/register-artist" className="hover:text-neutral-950 transition-colors">
+                <Link to="/register-artist" className="hover:text-[#DB2777] transition-colors">
                   Apply for Representation
                 </Link>
               </li>
               <li>
-                <Link to="/login" className="hover:text-neutral-950 transition-colors">
+                <Link to="/login" className="hover:text-[#DB2777] transition-colors">
                   Atelier Console Login
                 </Link>
               </li>
               <li>
-                <Link to="/pricing" className="hover:text-neutral-950 transition-colors">
+                <Link to="/pricing" className="hover:text-[#DB2777] transition-colors">
                   Fee Structure & Tiers
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="hover:text-neutral-950 transition-colors">
+                <Link to="/contact" className="hover:text-[#DB2777] transition-colors">
                   Artisan Support
                 </Link>
               </li>
@@ -106,10 +124,10 @@ const Footer = () => {
 
           {/* Newsletter */}
           <div>
-            <h4 className="text-neutral-900 text-xs font-semibold uppercase tracking-[0.2em] mb-3">
+            <h4 className="text-[#501854] dark:text-[#D4C7E1] text-xs font-semibold uppercase tracking-[0.2em] mb-3">
               The Curated Dispatch
             </h4>
-            <p className="text-sm font-light text-neutral-600 mb-5 leading-relaxed">
+            <p className="text-sm font-light text-[#7E4882] dark:text-[#A695B8] mb-5 leading-relaxed">
               Seasonal trends, master interviews, and private atelier opening invitations delivered monthly.
             </p>
             <form onSubmit={handleSubscribe} className="space-y-2.5">
@@ -119,13 +137,13 @@ const Footer = () => {
                   placeholder="Enter your email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full bg-white/90 border border-neutral-300 text-neutral-900 placeholder:text-neutral-400 rounded-full pl-5 pr-12 py-3 text-xs focus:outline-none focus:border-neutral-900 shadow-2xs"
+                  className="w-full bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] placeholder:text-[#8C3B8A]/50 dark:placeholder:text-[#A695B8]/60 rounded-full pl-5 pr-12 py-3 text-xs focus:outline-none focus:border-[#DB2777] shadow-2xs"
                   required
                 />
                 <button
                   type="submit"
                   aria-label="Subscribe"
-                  className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-neutral-950 text-white flex items-center justify-center hover:bg-neutral-800 transition-colors shadow-xs"
+                  className="absolute right-1.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-[#501854] dark:bg-[#DB2777] text-white flex items-center justify-center hover:opacity-90 transition-colors shadow-xs"
                 >
                   <ArrowRight size={14} />
                 </button>
@@ -134,13 +152,13 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="pt-8 border-t border-neutral-300/60 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-light text-neutral-500">
+        <div className="pt-8 border-t border-[#EFBDEB] dark:border-[#3B3237] flex flex-col sm:flex-row justify-between items-center gap-4 text-xs font-light text-[#7E4882] dark:text-[#A695B8]">
           <p>© {new Date().getFullYear()} GlowLink Atelier. All rights reserved. Registered in South Africa.</p>
           <div className="flex gap-6">
-            <Link to="/contact" className="hover:text-neutral-900 transition-colors">
+            <Link to="/contact" className="hover:text-[#501854] dark:hover:text-white transition-colors">
               Privacy Discretion
             </Link>
-            <Link to="/contact" className="hover:text-neutral-900 transition-colors">
+            <Link to="/contact" className="hover:text-[#501854] dark:hover:text-white transition-colors">
               Terms of Patronage
             </Link>
           </div>

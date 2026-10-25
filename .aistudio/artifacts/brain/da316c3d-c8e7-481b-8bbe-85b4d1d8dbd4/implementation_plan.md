@@ -187,5 +187,9 @@ Consolidate GlowLink's design-system source of truth (`glowlink-main`) and nativ
 4. **Step 4: Mobile Ergonomics & PWA Setup**:
    * Add `MobileBottomNav.tsx` with haptic feedback.
    * Add PWA manifest and install trigger.
-5. **Step 5: Verification & Compilation**:
+5. **Step 5: Visual Brand System & Hero Watermark Resolution**:
+   * Replaced the static, truncated "GLO..." watermark with a seamless, right-to-left infinite looping marquee ticker.
+   * Displays the full name "GLOWLINK" continuously in brand magenta `#db2979` with haute couture star dividers.
+   * Bounded cleanly with `w-full overflow-hidden` to maintain 100% responsive containment across mobile and desktop viewports.
+6. **Step 6: Verification & Compilation**:
    * Run full applet compilation and verify zero errors across all routes.

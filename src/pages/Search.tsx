@@ -49,35 +49,35 @@ const Search = () => {
   };
 
   return (
-    <div className="bg-[#FAF8F5] text-neutral-900 min-h-screen selection:bg-neutral-900 selection:text-white">
+    <div className="bg-white dark:bg-[#17111D] text-[#501854] dark:text-[#D4C7E1] min-h-screen selection:bg-[#DB2777] selection:text-white transition-colors duration-300">
       <Header />
 
-      <section className="pt-36 pb-12 px-6 md:px-12 border-b border-neutral-200/70">
+      <section className="pt-28 sm:pt-36 pb-8 sm:pb-12 px-4 sm:px-6 md:px-12 border-b border-[#EFBDEB] dark:border-[#3B3237]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-10">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 border border-neutral-200/80 shadow-xs mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-              <span className="text-xs font-semibold tracking-[0.2em] text-neutral-600 uppercase">
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-xs mb-3">
+              <Sparkles className="w-3.5 h-3.5 text-[#DB2777]" />
+              <span className="text-xs font-semibold tracking-[0.2em] text-[#501854] dark:text-[#D4C7E1] uppercase">
                 Curated Directory
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-serif text-neutral-950 tracking-tight">
-              Discover Master <span className="italic font-normal">Artisans</span>
+            <h1 className="text-4xl md:text-5xl font-serif text-[#501854] dark:text-[#D4C7E1] tracking-tight">
+              Discover Master <span className="italic font-normal text-[#DB2777]">Artisans</span>
             </h1>
-            <p className="text-sm text-neutral-600 font-light mt-3 max-w-lg mx-auto">
+            <p className="text-sm text-[#7E4882] dark:text-[#A695B8] font-light mt-3 max-w-lg mx-auto">
               Find and reserve verified beauty artists across South Africa for private salon visits or home appointments.
             </p>
           </div>
 
           {/* Search Bar with iOS Liquid Glass Pill */}
           <div className="max-w-4xl mx-auto mb-6">
-            <div className="glass-search-pill flex flex-col md:flex-row items-center p-2 shadow-[0_12px_36px_-6px_rgba(0,0,0,0.07)] border border-white/90">
-              <div className="flex-grow w-full flex items-center px-4 py-2 border-b md:border-b-0 md:border-r border-neutral-200/60">
-                <SearchIcon size={18} className="text-neutral-400 mr-3 shrink-0" />
+            <div className="glass-search-pill flex flex-col md:flex-row items-center p-2 shadow-[0_12px_36px_-6px_rgba(80,24,84,0.08)] border border-[#EFBDEB] dark:border-[#3B3237]">
+              <div className="flex-grow w-full flex items-center px-4 py-2 border-b md:border-b-0 md:border-r border-[#EFBDEB]/60 dark:border-[#3B3237]">
+                <SearchIcon size={18} className="text-[#8C3B8A] dark:text-[#A695B8] mr-3 shrink-0" />
                 <input
                   type="text"
                   placeholder="Service, stylist or salon..."
-                  className="w-full bg-transparent text-sm text-neutral-900 focus:outline-none placeholder:text-neutral-400 border-none p-0 !border-0 !bg-transparent"
+                  className="w-full bg-transparent text-sm text-[#501854] dark:text-[#D4C7E1] focus:outline-none placeholder:text-[#8C3B8A]/60 dark:placeholder:text-[#A695B8]/60 border-none p-0 !border-0 !bg-transparent"
                   value={service}
                   onChange={(e) => {
                     setService(e.target.value);
@@ -86,11 +86,11 @@ const Search = () => {
                 />
               </div>
               <div className="w-full md:w-64 flex items-center px-4 py-2">
-                <MapPin size={18} className="text-neutral-400 mr-3 shrink-0" />
+                <MapPin size={18} className="text-[#8C3B8A] dark:text-[#A695B8] mr-3 shrink-0" />
                 <input
                   type="text"
                   placeholder="City / Suburb (e.g. Sandton)"
-                  className="w-full bg-transparent text-sm text-neutral-900 focus:outline-none placeholder:text-neutral-400 border-none p-0 !border-0 !bg-transparent"
+                  className="w-full bg-transparent text-sm text-[#501854] dark:text-[#D4C7E1] focus:outline-none placeholder:text-[#8C3B8A]/60 dark:placeholder:text-[#A695B8]/60 border-none p-0 !border-0 !bg-transparent"
                   value={location}
                   onChange={(e) => {
                     setLocation(e.target.value);
@@ -112,8 +112,8 @@ const Search = () => {
                 }}
                 className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-wider font-medium whitespace-nowrap transition-all ${
                   category === cat.id
-                    ? "bg-neutral-950 text-white shadow-xs"
-                    : "bg-white/80 text-neutral-700 border border-neutral-200/80 hover:bg-white"
+                    ? "bg-[#501854] dark:bg-[#DB2777] text-white shadow-xs"
+                    : "bg-[#FAF2FA] dark:bg-[#372E3E] text-[#501854] dark:text-[#D4C7E1] border border-[#EFBDEB] dark:border-[#3B3237] hover:border-[#DB2777]"
                 }`}
               >
                 {cat.label}
@@ -122,13 +122,13 @@ const Search = () => {
           </div>
 
           {/* Filters Bar with Rating & Price */}
-          <div className="max-w-4xl mx-auto flex items-center justify-between flex-wrap gap-4 pt-3 border-t border-neutral-200/70">
-            <div className="flex items-center gap-3 flex-wrap">
-              <div className="flex items-center text-xs uppercase tracking-widest text-neutral-500 font-medium">
-                <Filter size={14} className="mr-2" /> Filters:
+          <div className="max-w-4xl mx-auto flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 pt-3 border-t border-[#EFBDEB] dark:border-[#3B3237]">
+            <div className="flex items-center gap-2 flex-wrap">
+              <div className="flex items-center text-xs uppercase tracking-widest text-[#7E4882] dark:text-[#A695B8] font-medium mr-1">
+                <Filter size={14} className="mr-1.5 text-[#DB2777]" /> Filters:
               </div>
               <select
-                className="px-4 py-2 rounded-full border border-neutral-200/80 bg-white/80 text-xs text-neutral-800 focus:outline-none shadow-xs"
+                className="px-3 py-1.5 rounded-full border border-[#E7C1DC] dark:border-[#3B3237] bg-white dark:bg-[#3E343C] text-xs text-[#501854] dark:text-[#D4C7E1] focus:outline-none shadow-xs"
                 value={minRating}
                 onChange={(e) => {
                   setMinRating(e.target.value);
@@ -142,33 +142,33 @@ const Search = () => {
               </select>
 
               <select
-                className="px-4 py-2 rounded-full border border-neutral-200/80 bg-white/80 text-xs text-neutral-800 focus:outline-none shadow-xs"
+                className="px-3 py-1.5 rounded-full border border-[#E7C1DC] dark:border-[#3B3237] bg-white dark:bg-[#3E343C] text-xs text-[#501854] dark:text-[#D4C7E1] focus:outline-none shadow-xs"
                 value={priceRange}
                 onChange={(e) => {
                   setPriceRange(e.target.value);
                   handleFilterChange("priceRange", e.target.value);
                 }}
               >
-                <option value="">Any Starting Rate</option>
-                <option value="under-500">Under R500</option>
+                <option value="">Any Rate</option>
+                <option value="under-500">&lt; R500</option>
                 <option value="500-1000">R500 - R1,000</option>
                 <option value="1000-plus">R1,000+</option>
               </select>
             </div>
 
-            <div className="text-xs text-neutral-500 font-light">
-              Showing <span className="font-semibold text-neutral-900">{filteredArtisans.length}</span> verified master artisans
+            <div className="text-xs text-[#7E4882] dark:text-[#A695B8] font-light">
+              Showing <span className="font-semibold text-[#501854] dark:text-[#D4C7E1]">{filteredArtisans.length}</span> verified master artisans
             </div>
           </div>
         </div>
       </section>
 
       {/* Directory Grid */}
-      <section className="py-16 px-6 md:px-12 max-w-7xl mx-auto">
+      <section className="py-10 sm:py-16 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto">
         {filteredArtisans.length === 0 ? (
-          <div className="text-center py-20 glass-panel max-w-md mx-auto p-8 rounded-3xl">
-            <p className="font-serif text-xl text-neutral-900 mb-2">No artisans match your criteria</p>
-            <p className="text-xs text-neutral-500 mb-6 font-light">
+          <div className="text-center py-20 glass-panel max-w-md mx-auto p-8 rounded-3xl border border-[#EFBDEB] dark:border-[#3B3237]">
+            <p className="font-serif text-xl text-[#501854] dark:text-[#D4C7E1] mb-2">No artisans match your criteria</p>
+            <p className="text-xs text-[#7E4882] dark:text-[#A695B8] mb-6 font-light">
               Try adjusting your search terms, changing the location, or clearing rating filters.
             </p>
             <button
@@ -180,7 +180,7 @@ const Search = () => {
                 setPriceRange("");
                 setSearchParams({});
               }}
-              className="bg-neutral-950 text-white px-6 py-2.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:bg-neutral-800 transition-all"
+              className="bg-[#501854] dark:bg-[#DB2777] text-white px-6 py-2.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:opacity-90 transition-all"
             >
               Reset All Filters
             </button>
@@ -194,44 +194,44 @@ const Search = () => {
                   triggerHaptic(10);
                   navigate(`/profile/${artisan.id}`);
                 }}
-                className="artist-card cursor-pointer group bg-white/90 border border-neutral-200/80 rounded-3xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300"
+                className="artist-card cursor-pointer group bg-white dark:bg-[#241C2B] border border-[#EFBDEB] dark:border-[#3B3237] rounded-3xl overflow-hidden shadow-xs hover:shadow-xl transition-all duration-300"
               >
-                <div className="relative h-64 overflow-hidden bg-neutral-100">
+                <div className="relative h-64 overflow-hidden bg-[#FAF2FA] dark:bg-[#372E3E]">
                   <img
                     src={artisan.image}
                     alt={artisan.name}
                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
-                  <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-semibold text-neutral-900 border border-neutral-200/60 shadow-2xs">
+                  <div className="absolute top-4 left-4 bg-white/95 dark:bg-[#241C2B]/95 backdrop-blur-md px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-semibold text-[#501854] dark:text-[#D4C7E1] border border-[#EFBDEB] dark:border-[#3B3237] shadow-2xs">
                     {artisan.tag}
                   </div>
-                  <div className="absolute bottom-4 right-4 bg-neutral-950/80 backdrop-blur-md px-3 py-1 rounded-full text-xs text-white font-medium flex items-center gap-1">
-                    <Star size={12} className="text-amber-400 fill-amber-400" />
+                  <div className="absolute bottom-4 right-4 bg-[#501854]/90 dark:bg-[#17111D]/90 backdrop-blur-md px-3 py-1 rounded-full text-xs text-white font-medium flex items-center gap-1">
+                    <Star size={12} className="text-[#DB2777] fill-[#DB2777]" />
                     <span>{artisan.rating}</span>
-                    <span className="text-neutral-400 text-[10px]">({artisan.reviewsCount})</span>
+                    <span className="text-pink-200 text-[10px]">({artisan.reviewsCount})</span>
                   </div>
                 </div>
 
                 <div className="p-6">
-                  <h3 className="text-xl font-serif text-neutral-950 mb-1 group-hover:text-amber-700 transition-colors">
+                  <h3 className="text-xl font-serif text-[#501854] dark:text-[#D4C7E1] mb-1 group-hover:text-[#DB2777] transition-colors">
                     {artisan.name}
                   </h3>
-                  <p className="text-xs text-neutral-600 font-light mb-3">
+                  <p className="text-xs text-[#7E4882] dark:text-[#A695B8] font-light mb-3">
                     {artisan.specialty}
                   </p>
 
-                  <div className="flex items-center gap-1.5 text-xs text-neutral-500 mb-5">
-                    <MapPin size={13} className="text-neutral-400" />
+                  <div className="flex items-center gap-1.5 text-xs text-[#7E4882] dark:text-[#A695B8] mb-5">
+                    <MapPin size={13} className="text-[#DB2777]" />
                     <span>{artisan.location}</span>
                   </div>
 
-                  <div className="pt-4 border-t border-neutral-100 flex items-center justify-between">
+                  <div className="pt-4 border-t border-[#EFBDEB] dark:border-[#3B3237] flex items-center justify-between">
                     <div>
-                      <span className="text-[10px] uppercase tracking-wider text-neutral-400 block font-medium">Bespoke Rates</span>
-                      <span className="text-sm font-semibold text-neutral-900">{artisan.priceRange}</span>
+                      <span className="text-[10px] uppercase tracking-wider text-[#8C3B8A] dark:text-[#A695B8] block font-medium">Bespoke Rates</span>
+                      <span className="text-sm font-semibold text-[#501854] dark:text-[#D4C7E1]">{artisan.priceRange}</span>
                     </div>
 
-                    <div className="w-9 h-9 rounded-full bg-neutral-100 group-hover:bg-neutral-950 group-hover:text-white transition-all duration-300 flex items-center justify-center text-neutral-900">
+                    <div className="w-9 h-9 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] group-hover:bg-[#501854] dark:group-hover:bg-[#DB2777] group-hover:text-white transition-all duration-300 flex items-center justify-center text-[#501854] dark:text-[#D4C7E1]">
                       <ArrowRight size={15} />
                     </div>
                   </div>

@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
-import { Search, Calendar, Star, Sparkles, ShieldCheck, CheckCircle2, ArrowRight } from "lucide-react";
+import { Search, Calendar, Star, Sparkles, CheckCircle2, ArrowRight } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { triggerHaptic } from "@/services/haptics";
 
@@ -59,74 +59,74 @@ const HowItWorks = () => {
   ];
 
   return (
-    <div className="bg-[#FAF8F5] text-neutral-900 min-h-screen selection:bg-neutral-900 selection:text-white">
+    <div className="bg-white dark:bg-[#17111D] text-[#501854] dark:text-[#D4C7E1] min-h-screen selection:bg-[#DB2777] selection:text-white transition-colors duration-300">
       <Header />
 
-      <section className="pt-36 pb-20 px-6 md:px-12 border-b border-neutral-200/70">
+      <section className="pt-28 sm:pt-36 pb-12 sm:pb-20 px-4 sm:px-6 md:px-12 border-b border-[#EFBDEB] dark:border-[#3B3237]">
         <div className="max-w-4xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/80 border border-neutral-200/80 shadow-xs mb-4">
-            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-            <span className="text-xs uppercase tracking-[0.2em] text-neutral-600 font-semibold">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-xs mb-4">
+            <Sparkles className="w-3.5 h-3.5 text-[#DB2777]" />
+            <span className="text-[11px] uppercase tracking-[0.2em] text-[#501854] dark:text-[#D4C7E1] font-semibold">
               The Protocol
             </span>
           </div>
-          <h1 className="text-4xl md:text-6xl font-serif text-neutral-950 tracking-tight mb-4">
-            How It <span className="italic font-normal">Works</span>
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-serif text-[#501854] dark:text-[#D4C7E1] tracking-tight mb-4">
+            How It <span className="italic font-normal text-[#DB2777]">Works</span>
           </h1>
-          <p className="text-base text-neutral-600 max-w-xl mx-auto font-light leading-relaxed">
+          <p className="text-sm sm:text-base text-[#7E4882] dark:text-[#A695B8] max-w-xl mx-auto font-light leading-relaxed">
             Elevating every step from artisan discovery to bespoke appointment completion.
           </p>
         </div>
       </section>
 
       {/* For Clients */}
-      <section className="py-20 px-6 md:px-12 max-w-7xl mx-auto">
-        <div className="mb-12">
-          <span className="text-xs uppercase tracking-[0.2em] text-neutral-500 block mb-2 font-semibold">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 md:px-12 max-w-7xl mx-auto">
+        <div className="mb-8 sm:mb-12">
+          <span className="text-xs uppercase tracking-[0.2em] text-[#DB2777] block mb-2 font-semibold">
             For Discerning Clients
           </span>
-          <h2 className="font-serif text-3xl md:text-4xl text-neutral-950">
+          <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#501854] dark:text-[#D4C7E1]">
             Four Steps to Effortless Beauty
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           {clientSteps.map((step) => (
-            <div key={step.num} className="p-8 rounded-3xl bg-white border border-neutral-200/80 shadow-xs relative">
-              <span className="font-serif italic text-3xl text-neutral-300 block mb-4 font-semibold">
+            <div key={step.num} className="p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-white dark:bg-[#241C2B] border border-[#EFBDEB] dark:border-[#3B3237] shadow-xs relative">
+              <span className="font-serif italic text-2xl sm:text-3xl text-[#DB2777] block mb-3 font-semibold">
                 {step.num}
               </span>
-              <div className="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center text-neutral-900 mb-4">
+              <div className="w-10 h-10 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] flex items-center justify-center text-[#501854] dark:text-[#D4C7E1] mb-4 border border-[#EFBDEB] dark:border-[#3B3237]">
                 <step.icon size={18} />
               </div>
-              <h3 className="font-serif text-xl text-neutral-950 mb-2">{step.title}</h3>
-              <p className="text-xs text-neutral-600 font-light leading-relaxed">{step.description}</p>
+              <h3 className="font-serif text-lg sm:text-xl text-[#501854] dark:text-[#D4C7E1] mb-2">{step.title}</h3>
+              <p className="text-xs text-[#7E4882] dark:text-[#A695B8] font-light leading-relaxed">{step.description}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* For Artisans */}
-      <section className="py-20 px-6 md:px-12 bg-white/60 border-t border-neutral-200/70">
+      <section className="py-12 sm:py-20 px-4 sm:px-6 md:px-12 bg-[#FAF2FA]/50 dark:bg-[#241C2B]/40 border-t border-[#EFBDEB] dark:border-[#3B3237] transition-colors">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-12">
-            <span className="text-xs uppercase tracking-[0.2em] text-neutral-500 block mb-2 font-semibold">
+          <div className="mb-8 sm:mb-12">
+            <span className="text-xs uppercase tracking-[0.2em] text-[#DB2777] block mb-2 font-semibold">
               For Verified Artisans
             </span>
-            <h2 className="font-serif text-3xl md:text-4xl text-neutral-950">
+            <h2 className="font-serif text-2xl sm:text-3xl md:text-4xl text-[#501854] dark:text-[#D4C7E1]">
               Grow Your Prestige Atelier
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
             {artistSteps.map((step, idx) => (
-              <div key={idx} className="p-8 rounded-3xl bg-white border border-neutral-200/80 shadow-xs flex items-start gap-4">
-                <div className="w-8 h-8 rounded-full bg-emerald-50 text-emerald-700 flex items-center justify-center shrink-0 mt-1">
+              <div key={idx} className="p-6 sm:p-8 rounded-2xl sm:rounded-3xl bg-white dark:bg-[#241C2B] border border-[#EFBDEB] dark:border-[#3B3237] shadow-xs flex items-start gap-4">
+                <div className="w-8 h-8 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] text-[#DB2777] flex items-center justify-center shrink-0 mt-1 border border-[#EFBDEB] dark:border-[#3B3237]">
                   <CheckCircle2 size={16} />
                 </div>
                 <div>
-                  <h3 className="font-serif text-lg text-neutral-950 mb-1">{step.title}</h3>
-                  <p className="text-xs text-neutral-600 font-light leading-relaxed">{step.description}</p>
+                  <h3 className="font-serif text-base sm:text-lg text-[#501854] dark:text-[#D4C7E1] mb-1">{step.title}</h3>
+                  <p className="text-xs text-[#7E4882] dark:text-[#A695B8] font-light leading-relaxed">{step.description}</p>
                 </div>
               </div>
             ))}
@@ -138,7 +138,7 @@ const HowItWorks = () => {
                 triggerHaptic(10);
                 navigate("/register-artist");
               }}
-              className="bg-neutral-950 text-white px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:bg-neutral-800 transition-all shadow-md inline-flex items-center gap-2"
+              className="bg-[#501854] dark:bg-[#DB2777] text-white px-8 py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:opacity-90 transition-all shadow-md inline-flex items-center gap-2"
             >
               <span>Apply for Roster</span>
               <ArrowRight size={14} />
