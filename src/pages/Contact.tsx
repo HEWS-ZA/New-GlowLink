@@ -1,7 +1,4 @@
 import { useState } from "react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
 import { Mail, Phone, MapPin, Send, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 import { triggerHaptic } from "@/services/haptics";
@@ -29,9 +26,7 @@ const Contact = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-[#17111D] text-[#501854] dark:text-[#D4C7E1] min-h-screen selection:bg-[#DB2777] selection:text-white transition-colors duration-300">
-      <Header />
-
+    <div className="w-full">
       <section className="pt-28 sm:pt-36 pb-12 sm:pb-20 px-4 sm:px-6 md:px-12 border-b border-[#EFBDEB] dark:border-[#3B3237]">
         <div className="max-w-4xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-xs mb-4">
@@ -159,9 +154,6 @@ const Contact = () => {
           </form>
         </div>
       </section>
-
-      <ScrollToTop />
-      <Footer />
     </div>
   );
 };

@@ -92,7 +92,7 @@ export const MascaraWandIcon: React.FC<CosmeticIconProps> = ({ className = "", s
   </svg>
 );
 
-// 4. Slender Angled Makeup Brush
+// 4. Luxury Powder & Blush Makeup Brush
 export const MakeupBrushIcon: React.FC<CosmeticIconProps> = ({ className = "", style }) => (
   <svg
     viewBox="0 0 24 24"
@@ -105,14 +105,39 @@ export const MakeupBrushIcon: React.FC<CosmeticIconProps> = ({ className = "", s
     style={{ width: "1.1em", height: "1.1em", ...style }}
     aria-hidden="true"
   >
-    {/* Brush handle */}
-    <path d="M3.5 20.5L10 14" className="stroke-[#501854] dark:stroke-[#D4C7E1]" strokeWidth="2" />
-    {/* Metallic ferrule */}
-    <path d="M9.5 14.5L12 12L13.5 13.5L11 16L9.5 14.5Z" className="stroke-[#501854] dark:stroke-[#D4C7E1] fill-[#EFBDEB]/30" />
-    {/* Fluffy angled bristles with pink blush tip */}
+    {/* Tapered luxury wooden brush handle */}
     <path
-      d="M12.5 11.5C13.5 9 16 6 20.5 3.5C20 8 17 10.5 14.5 11.5"
+      d="M3.2 20.8C2.6 20.2 2.8 19.3 3.6 18.5L8.5 13.6L10.4 15.5L5.5 20.4C4.7 21.2 3.8 21.4 3.2 20.8Z"
+      className="stroke-[#501854] dark:stroke-[#D4C7E1]"
+    />
+    {/* Metallic ferrule with band accent */}
+    <path
+      d="M8.5 13.6L11.5 10.6L13.4 12.5L10.4 15.5Z"
+      className="stroke-[#501854] dark:stroke-[#D4C7E1] fill-[#EFBDEB]/25 dark:fill-[#503E5E]/40"
+    />
+    <line
+      x1="9.5"
+      y1="12.6"
+      x2="11.4"
+      y2="14.5"
+      className="stroke-[#EFBDEB] dark:stroke-[#8C3B8A]"
+      strokeWidth="1.2"
+    />
+    {/* Soft rounded dome bristle head with pink blush powder tip */}
+    <path
+      d="M11.5 10.6C11 8.5 12.5 5.5 15.5 3.5C18 3 20.5 4.5 21 7C21.5 10 18.5 11.5 13.4 12.5"
       className="stroke-[#DB2777] fill-[#DB2777]/20"
+    />
+    {/* Delicate fine bristle texture lines */}
+    <path
+      d="M13.2 9C14.2 7 15.8 5.2 18 4.2"
+      className="stroke-[#DB2777]/70"
+      strokeWidth="1.2"
+    />
+    <path
+      d="M15 11C16.2 9.5 17.5 8 19 6.5"
+      className="stroke-[#DB2777]/50"
+      strokeWidth="1.2"
     />
   </svg>
 );

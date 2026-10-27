@@ -106,7 +106,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link to="/login" className="hover:text-[#DB2777] transition-colors">
-                  Atelier Console Login
+                  Artisan Sign In
                 </Link>
               </li>
               <li>

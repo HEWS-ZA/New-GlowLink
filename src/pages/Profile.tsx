@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { useParams } from "react-router-dom";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
 import {
   MapPin,
   Star,
@@ -15,20 +12,15 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import { getArtisanById, addArtisanReview } from "@/services/artisanStore";
-import { createBooking } from "@/services/bookingStore";
 import { triggerHaptic } from "@/services/haptics";
+import { BookingDrawer } from "@/components/booking/BookingDrawer";
 
 const Profile = () => {
   const { id } = useParams<{ id?: string }>();
   const artisan = getArtisanById(id || "1") || getArtisanById("1")!;
 
   const [selectedServiceId, setSelectedServiceId] = useState<number>(artisan.services[0]?.id || 1);
-  const [bookingDate, setBookingDate] = useState("");
-  const [bookingTime, setBookingTime] = useState("14:00");
-  const [clientName, setClientName] = useState("");
-  const [clientEmail, setClientEmail] = useState("");
-  const [clientPhone, setClientPhone] = useState("");
-  const [isSubmittingBooking, setIsSubmittingBooking] = useState(false);
+  const [isBookingDrawerOpen, setIsBookingDrawerOpen] = useState(false);
 
   // Review Form State
   const [reviewName, setReviewName] = useState("");
@@ -37,50 +29,6 @@ const Profile = () => {
   const [showReviewForm, setShowReviewForm] = useState(false);
 
   const selectedService = artisan.services.find((s) => s.id === selectedServiceId) || artisan.services[0];
-
-  const handleBooking = (e: React.FormEvent) => {
-    e.preventDefault();
-    triggerHaptic(15);
-
-    if (!bookingDate) {
-      toast.error("Please choose a date for your atelier appointment.");
-      return;
-    }
-    if (!clientName || !clientEmail || !clientPhone) {
-      toast.error("Please provide your contact name, email, and phone number.");
-      return;
-    }
-
-    setIsSubmittingBooking(true);
-
-    try {
-      createBooking({
-        artisanId: artisan.id,
-        artisanName: artisan.name,
-        serviceName: selectedService.name,
-        servicePrice: selectedService.price,
-        date: bookingDate,
-        time: bookingTime,
-        clientName,
-        clientEmail,
-        clientPhone,
-        status: "Confirmed",
-      });
-
-      toast.success(
-        `Reservation confirmed with ${artisan.name} for ${selectedService.name} on ${bookingDate} at ${bookingTime}.`
-      );
-
-      setBookingDate("");
-      setClientName("");
-      setClientEmail("");
-      setClientPhone("");
-    } catch {
-      toast.error("Unable to record appointment. Please try again.");
-    } finally {
-      setIsSubmittingBooking(false);
-    }
-  };
 
   const handleReviewSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -103,12 +51,8 @@ const Profile = () => {
     setShowReviewForm(false);
   };
 
-  const times = ["09:00", "11:00", "14:00", "16:00", "18:00"];
-
   return (
-    <div className="bg-white dark:bg-[#17111D] text-[#501854] dark:text-[#D4C7E1] min-h-screen selection:bg-[#DB2777] selection:text-white transition-colors duration-300">
-      <Header />
-
+    <div className="w-full">
       <section className="pt-28 sm:pt-36 pb-16 px-4 sm:px-6 md:px-12 border-b border-[#EFBDEB] dark:border-[#3B3237]">
         <div className="max-w-7xl mx-auto">
           {/* Profile Banner */}
@@ -362,124 +306,73 @@ const Profile = () => {
 
                 <h3 className="text-2xl font-serif text-[#501854] dark:text-[#D4C7E1] mb-1">Reserve Session</h3>
                 <p className="text-xs text-[#7E4882] dark:text-[#A695B8] font-light mb-6">
-                  Select your preferred appointment date and time for private service.
+                  Select your treatment and reserve an exclusive slot with a 50% deposit.
                 </p>
 
-                <form onSubmit={handleBooking} className="space-y-4">
+                <div className="space-y-4">
                   <div>
                     <label className="block text-[11px] uppercase tracking-wider text-[#501854] dark:text-[#D4C7E1] mb-1.5 font-medium">
                       Selected Service
                     </label>
-                    <div className="p-3 bg-[#FAF2FA] dark:bg-[#372E3E] rounded-2xl border border-[#EFBDEB] dark:border-[#3B3237] text-xs flex justify-between items-center">
-                      <span className="font-medium text-[#501854] dark:text-[#D4C7E1]">{selectedService.name}</span>
-                      <span className="font-serif font-semibold text-[#DB2777]">{selectedService.price}</span>
+                    <div className="p-3.5 bg-[#FAF2FA] dark:bg-[#372E3E] rounded-2xl border border-[#EFBDEB] dark:border-[#3B3237] text-xs flex justify-between items-center">
+                      <div>
+                        <span className="font-semibold text-[#501854] dark:text-[#D4C7E1] block">{selectedService.name}</span>
+                        <span className="text-[11px] text-[#7E4882] dark:text-[#A695B8]">{selectedService.duration}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="font-serif font-bold text-sm text-[#DB2777] block">{selectedService.price}</span>
+                        <span className="text-[10px] text-gray-500 font-medium">50% Deposit</span>
+                      </div>
                     </div>
                   </div>
 
-                  <div>
-                    <label className="block text-[11px] uppercase tracking-wider text-[#501854] dark:text-[#D4C7E1] mb-1.5 font-medium">
-                      Appointment Date
-                    </label>
-                    <input
-                      type="date"
-                      required
-                      min={new Date().toISOString().split("T")[0]}
-                      value={bookingDate}
-                      onChange={(e) => setBookingDate(e.target.value)}
-                      className="w-full px-4 py-2.5 text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] rounded-2xl text-[#501854] dark:text-[#D4C7E1]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] uppercase tracking-wider text-[#501854] dark:text-[#D4C7E1] mb-1.5 font-medium">
-                      Available Time Slot
-                    </label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {times.map((t) => (
-                        <button
-                          key={t}
-                          type="button"
-                          onClick={() => {
-                            triggerHaptic(8);
-                            setBookingTime(t);
-                          }}
-                          className={`py-2 rounded-xl text-xs font-medium transition-all ${
-                            bookingTime === t
-                              ? "bg-[#501854] dark:bg-[#DB2777] text-white shadow-2xs"
-                              : "bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] text-[#501854] dark:text-[#D4C7E1] hover:border-[#DB2777]"
-                          }`}
-                        >
-                          {t}
-                        </button>
-                      ))}
+                  <div className="p-4 rounded-2xl bg-[#FAF2FA]/60 dark:bg-[#372E3E]/40 border border-[#EFBDEB]/60 dark:border-[#3B3237] space-y-2 text-xs">
+                    <div className="flex justify-between text-[#7E4882] dark:text-[#A695B8]">
+                      <span>Experience Type:</span>
+                      <span className="font-medium text-[#501854] dark:text-[#D4C7E1]">Studio or Mobile House Call</span>
                     </div>
-                  </div>
-
-                  <div className="pt-2 border-t border-[#EFBDEB] dark:border-[#3B3237] space-y-3">
-                    <div>
-                      <label className="block text-[11px] uppercase tracking-wider text-[#501854] dark:text-[#D4C7E1] mb-1 font-medium">
-                        Your Full Name
-                      </label>
-                      <input
-                        type="text"
-                        required
-                        placeholder="e.g. Naledi Molefe"
-                        value={clientName}
-                        onChange={(e) => setClientName(e.target.value)}
-                        className="w-full px-4 py-2.5 text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] rounded-2xl text-[#501854] dark:text-[#D4C7E1]"
-                      />
+                    <div className="flex justify-between text-[#7E4882] dark:text-[#A695B8]">
+                      <span>Slot Lock Guarantee:</span>
+                      <span className="font-medium text-emerald-600 dark:text-emerald-400">15-Minute Reserved Hold</span>
                     </div>
-
-                    <div>
-                      <label className="block text-[11px] uppercase tracking-wider text-[#501854] dark:text-[#D4C7E1] mb-1 font-medium">
-                        Email Address
-                      </label>
-                      <input
-                        type="email"
-                        required
-                        placeholder="client@domain.com"
-                        value={clientEmail}
-                        onChange={(e) => setClientEmail(e.target.value)}
-                        className="w-full px-4 py-2.5 text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] rounded-2xl text-[#501854] dark:text-[#D4C7E1]"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-[11px] uppercase tracking-wider text-[#501854] dark:text-[#D4C7E1] mb-1 font-medium">
-                        Mobile Phone Number
-                      </label>
-                      <input
-                        type="tel"
-                        required
-                        placeholder="+27 82 000 0000"
-                        value={clientPhone}
-                        onChange={(e) => setClientPhone(e.target.value)}
-                        className="w-full px-4 py-2.5 text-xs bg-white dark:bg-[#3E343C] border border-[#E7C1DC] dark:border-[#3B3237] rounded-2xl text-[#501854] dark:text-[#D4C7E1]"
-                      />
+                    <div className="flex justify-between text-[#7E4882] dark:text-[#A695B8]">
+                      <span>Cancellation Policy:</span>
+                      <span className="font-medium text-[#501854] dark:text-[#D4C7E1]">100% Refund ({">"}48h)</span>
                     </div>
                   </div>
 
                   <button
-                    type="submit"
-                    disabled={isSubmittingBooking}
-                    className="w-full mt-2 bg-[#501854] dark:bg-[#DB2777] text-white py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md flex items-center justify-center gap-2 disabled:opacity-50"
+                    type="button"
+                    onClick={() => {
+                      triggerHaptic(12);
+                      setIsBookingDrawerOpen(true);
+                    }}
+                    className="w-full mt-2 bg-[#501854] dark:bg-[#DB2777] text-white py-3.5 rounded-full text-xs uppercase tracking-widest font-semibold hover:opacity-90 active:scale-95 transition-all shadow-md flex items-center justify-center gap-2 cursor-pointer"
                   >
-                    <span>{isSubmittingBooking ? "Confirming..." : "Reserve Appointment"}</span>
+                    <span>Reserve & Pay Deposit</span>
                     <ArrowRight size={14} />
                   </button>
 
                   <p className="text-[10px] text-center text-[#7E4882] dark:text-[#A695B8] font-light mt-2">
-                    Zero upfront studio booking deposit required today.
+                    Secured by Paystack • PCI-DSS Certified • Instant confirmation
                   </p>
-                </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      <ScrollToTop />
-      <Footer />
+      {/* Booking Drawer */}
+      <BookingDrawer
+        artisan={artisan}
+        initialServiceId={selectedService.id}
+        isOpen={isBookingDrawerOpen}
+        onClose={() => setIsBookingDrawerOpen(false)}
+        onBookingSuccess={() => {
+          setIsBookingDrawerOpen(false);
+        }}
+      />
     </div>
   );
 };

@@ -11,9 +11,6 @@ import {
   MapPin,
   ChevronRight,
 } from "lucide-react";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
 import { triggerHaptic } from "@/services/haptics";
 import { getStoredArtisans } from "@/services/artisanStore";
 import { useHeroAnimation } from "@/hooks/useHeroAnimation";
@@ -27,6 +24,14 @@ import {
   CombScissorsIcon,
   SparkleIcon,
 } from "@/components/CosmeticIcons";
+
+/**
+ * Marquee Presentation Style Toggle:
+ * 'A' -> Quiet Editorial Texture: Uppercase "GLOWLINK" with alternating pink outline (-webkit-text-stroke ~1px, transparent fill) and solid pink at ~45% opacity.
+ * 'B' -> Atelier Wordmark: Lowercase italic "Glowlink" matching the logo styling.
+ * Default: 'A'
+ */
+const MARQUEE_STYLE: "A" | "B" = "A";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -147,8 +152,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="bg-white dark:bg-[#17111D] text-[#501854] dark:text-[#D4C7E1] overflow-x-hidden selection:bg-[#DB2777] selection:text-white min-h-screen transition-colors duration-300">
-      <Header />
+    <div className="w-full overflow-x-hidden">
 
       {/* Atmospheric Background Glow */}
       <div className="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
@@ -223,7 +227,13 @@ const Home = () => {
                   <Search size={18} className="text-[#8C3B8A] dark:text-[#A695B8] mr-2.5 shrink-0" />
                   <input
                     type="text"
-                    placeholder={isInputFocused ? "Bridal makeup, hair salon, braids..." : placeholderText}
+                    placeholder={
+                      isInputFocused
+                        ? "Bridal makeup, hair salon, braids..."
+                        : (placeholderText && placeholderText.trim().length > 0
+                            ? placeholderText
+                            : "Bridal makeup, hair salon, braids...")
+                    }
                     value={serviceSearch}
                     onFocus={() => setIsInputFocused(true)}
                     onBlur={() => setIsInputFocused(false)}
@@ -232,11 +242,11 @@ const Home = () => {
                   />
                 </div>
 
-                <div className="w-full sm:w-44 flex items-center px-3.5 sm:px-4 py-2.5 min-h-[44px]">
+                <div className="w-full sm:w-52 md:w-56 lg:w-60 flex items-center px-3.5 sm:px-4 py-2.5 min-h-[44px] shrink-0">
                   <MapPin size={16} className="text-[#8C3B8A] dark:text-[#A695B8] mr-2 shrink-0" />
                   <input
                     type="text"
-                    placeholder="Sandton, Cape Town..."
+                    placeholder="Sandton, Cape Town"
                     value={locationSearch}
                     onChange={(e) => setLocationSearch(e.target.value)}
                     className="w-full bg-transparent text-sm text-[#501854] dark:text-[#D4C7E1] placeholder:text-[#8C3B8A]/60 dark:placeholder:text-[#A695B8]/60 focus:outline-none border-none p-0 !border-0 !bg-transparent min-h-[36px]"
@@ -275,60 +285,60 @@ const Home = () => {
 
           {/* Right Column: Hero Visual Card with capped height and clipped floating elements */}
           <div className="lg:col-span-5 w-full">
-            <div className="relative group max-w-[360px] sm:max-w-md lg:max-w-none mx-auto overflow-clip sm:overflow-visible">
-              {/* Ambient Floating Cosmetic Icons & Twinkling Sparkles (Depth Parallax Layer) */}
-              <div className="absolute -inset-2 sm:-inset-6 pointer-events-none z-20 overflow-hidden sm:overflow-visible">
+            <div className="relative group max-w-[340px] xs:max-w-[380px] sm:max-w-md lg:max-w-none mx-auto overflow-hidden sm:overflow-visible">
+              {/* Ambient Floating Cosmetic Icons & Twinkling Sparkles (Pure line icons with soft glow) */}
+              <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden sm:overflow-visible">
                 {/* 1. Floating Perfume Flacon - Top Right */}
                 <div
-                  className="hero-floating-icon absolute -top-1 -right-1 sm:-right-6 p-2 rounded-2xl bg-white/80 dark:bg-[#241C2B]/85 backdrop-blur-md border border-[#EFBDEB]/70 dark:border-[#3B3237] shadow-sm text-[#501854] dark:text-[#D4C7E1] opacity-90 transition-transform"
+                  className="hero-floating-icon absolute top-3 right-3 sm:top-2 sm:-right-3 lg:top-3 lg:-right-4 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.35)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.45)] opacity-90 transition-transform select-none"
                   data-parallax-depth="0.9"
                 >
-                  <PerfumeBottleIcon style={{ width: "20px", height: "20px" }} />
+                  <PerfumeBottleIcon style={{ width: "22px", height: "22px" }} />
                 </div>
 
                 {/* 2. Floating Nail Polish - Bottom Left */}
                 <div
-                  className="hero-floating-icon absolute -bottom-1 -left-1 sm:-left-6 p-2 rounded-2xl bg-white/80 dark:bg-[#241C2B]/85 backdrop-blur-md border border-[#EFBDEB]/70 dark:border-[#3B3237] shadow-sm text-[#501854] dark:text-[#D4C7E1] opacity-85 transition-transform"
+                  className="hero-floating-icon absolute bottom-14 left-3 sm:bottom-16 sm:-left-3 lg:bottom-20 lg:-left-4 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.35)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.45)] opacity-85 transition-transform select-none"
                   data-parallax-depth="0.75"
                 >
-                  <NailPolishIcon style={{ width: "18px", height: "18px" }} />
+                  <NailPolishIcon style={{ width: "20px", height: "20px" }} />
                 </div>
 
-                {/* 3. Floating Compact Mirror - Top Left (Desktop only to prevent mobile overflow) */}
+                {/* 3. Floating Compact Mirror - Top Left (Desktop/Tablet only) */}
                 <div
-                  className="hero-floating-icon hidden sm:block absolute -top-5 left-4 sm:left-8 p-2 rounded-2xl bg-white/80 dark:bg-[#241C2B]/85 backdrop-blur-md border border-[#EFBDEB]/70 dark:border-[#3B3237] shadow-sm text-[#501854] dark:text-[#D4C7E1] opacity-90 transition-transform"
+                  className="hero-floating-icon hidden sm:block absolute top-6 left-4 sm:left-6 lg:top-7 lg:left-6 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.35)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.45)] opacity-90 transition-transform select-none"
                   data-parallax-depth="1.1"
                 >
-                  <CompactMirrorIcon style={{ width: "20px", height: "20px" }} />
+                  <CompactMirrorIcon style={{ width: "22px", height: "22px" }} />
                 </div>
 
                 {/* 4. Floating Comb & Shears - Middle Right (Desktop only) */}
                 <div
-                  className="hero-floating-icon hidden md:block absolute top-1/2 -right-7 p-2 rounded-2xl bg-white/70 dark:bg-[#241C2B]/75 backdrop-blur-md border border-[#EFBDEB]/60 dark:border-[#3B3237] shadow-xs text-[#501854] dark:text-[#D4C7E1] opacity-75 transition-transform"
+                  className="hero-floating-icon hidden md:block absolute top-1/2 -right-2 lg:-right-3 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.3)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.4)] opacity-80 transition-transform select-none"
                   data-parallax-depth="0.6"
                 >
-                  <CombScissorsIcon style={{ width: "20px", height: "20px" }} />
+                  <CombScissorsIcon style={{ width: "22px", height: "22px" }} />
                 </div>
 
                 {/* 5. Floating Mascara Wand - Lower Right (Desktop only) */}
                 <div
-                  className="hero-floating-icon hidden md:block absolute bottom-24 -right-4 p-2 rounded-2xl bg-white/70 dark:bg-[#241C2B]/75 backdrop-blur-md border border-[#EFBDEB]/60 dark:border-[#3B3237] shadow-xs text-[#501854] dark:text-[#D4C7E1] opacity-75 transition-transform"
+                  className="hero-floating-icon hidden md:block absolute bottom-12 right-6 lg:right-8 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.3)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.4)] opacity-80 transition-transform select-none"
                   data-parallax-depth="0.8"
                 >
-                  <MascaraWandIcon style={{ width: "19px", height: "19px" }} />
+                  <MascaraWandIcon style={{ width: "21px", height: "21px" }} />
                 </div>
 
                 {/* 6. Twinkling Sparkle 1 - Upper Center */}
                 <div
-                  className="hero-floating-icon absolute top-5 right-1/4 opacity-95 transition-transform"
+                  className="hero-floating-icon absolute top-4 right-1/4 text-[#DB2777] drop-shadow-[0_2px_8px_rgba(219,39,119,0.4)] opacity-95 transition-transform select-none"
                   data-parallax-depth="1.2"
                 >
                   <SparkleIcon style={{ width: "16px", height: "16px" }} className="animate-pulse" />
                 </div>
 
-                {/* 7. Twinkling Sparkle 2 - Lower Center (Desktop only) */}
+                {/* 7. Twinkling Sparkle 2 - Lower Center (Desktop/Tablet only) */}
                 <div
-                  className="hero-floating-icon hidden sm:block absolute bottom-3 left-1/3 opacity-80 transition-transform"
+                  className="hero-floating-icon hidden sm:block absolute bottom-4 left-1/3 text-[#DB2777] drop-shadow-[0_2px_8px_rgba(219,39,119,0.4)] opacity-80 transition-transform select-none"
                   data-parallax-depth="0.5"
                 >
                   <SparkleIcon style={{ width: "15px", height: "15px" }} />
@@ -390,44 +400,58 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Infinite Looping GLOWLINK Marquee Banner under Hero */}
+      {/* Infinite Looping GLOWLINK Marquee Banner under Hero (Quiet Editorial Texture) */}
       <section 
-        className="w-full overflow-hidden border-y border-[#EFBDEB] dark:border-[#3B3237] bg-[#FAF2FA]/50 dark:bg-[#241C2B]/50 py-4 sm:py-6 select-none"
-        aria-label="GLOWLINK System Ticker"
+        className="w-full overflow-hidden border-y border-[#EFBDEB] dark:border-[#3B3237] bg-[#FAF2FA]/40 dark:bg-[#241C2B]/40 py-3.5 sm:py-5 select-none"
+        aria-hidden="true"
       >
         <div className="flex w-max animate-glowlink-marquee">
           {/* Loop Set 1 */}
           <div className="flex shrink-0 items-center">
-            {[...Array(6)].map((_, i) => (
-              <span key={`glowlink-set1-${i}`} className="inline-flex items-center">
-                <span 
-                  className="font-serif font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-wider uppercase glowlink-brand-text px-4 sm:px-8 whitespace-nowrap"
-                  style={{ color: "#db2979" }}
-                >
-                  GLOWLINK
+            {[...Array(10)].map((_, i) => {
+              const isOutline = i % 2 === 0;
+              const wordClass = MARQUEE_STYLE === "A"
+                ? (isOutline ? "marquee-text-outline uppercase" : "marquee-text-solid uppercase")
+                : (isOutline ? "marquee-wordmark-outline italic font-normal" : "marquee-wordmark-solid italic font-normal");
+              const wordText = MARQUEE_STYLE === "A" ? "GLOWLINK" : "Glowlink";
+
+              return (
+                <span key={`glowlink-set1-${i}`} className="inline-flex items-center">
+                  <span 
+                    className={`font-serif font-normal text-[clamp(1.5rem,3.8vw,3.25rem)] tracking-[0.16em] px-4 sm:px-8 whitespace-nowrap ${wordClass}`}
+                  >
+                    {wordText}
+                  </span>
+                  <span className="marquee-sparkle-separator text-xs sm:text-sm px-2 sm:px-4 select-none" aria-hidden="true">
+                    ✦
+                  </span>
                 </span>
-                <span className="text-[#db2979]/40 text-xl sm:text-3xl md:text-4xl px-2 select-none">
-                  ✦
-                </span>
-              </span>
-            ))}
+              );
+            })}
           </div>
 
-          {/* Loop Set 2 (Identical duplicate for seamless infinite loop) */}
+          {/* Loop Set 2 (Identical duplicate for seamless infinite loop up to 2560px) */}
           <div className="flex shrink-0 items-center" aria-hidden="true">
-            {[...Array(6)].map((_, i) => (
-              <span key={`glowlink-set2-${i}`} className="inline-flex items-center">
-                <span 
-                  className="font-serif font-black text-4xl sm:text-6xl md:text-7xl lg:text-8xl tracking-wider uppercase glowlink-brand-text px-4 sm:px-8 whitespace-nowrap"
-                  style={{ color: "#db2979" }}
-                >
-                  GLOWLINK
+            {[...Array(10)].map((_, i) => {
+              const isOutline = i % 2 === 0;
+              const wordClass = MARQUEE_STYLE === "A"
+                ? (isOutline ? "marquee-text-outline uppercase" : "marquee-text-solid uppercase")
+                : (isOutline ? "marquee-wordmark-outline italic font-normal" : "marquee-wordmark-solid italic font-normal");
+              const wordText = MARQUEE_STYLE === "A" ? "GLOWLINK" : "Glowlink";
+
+              return (
+                <span key={`glowlink-set2-${i}`} className="inline-flex items-center">
+                  <span 
+                    className={`font-serif font-normal text-[clamp(1.5rem,3.8vw,3.25rem)] tracking-[0.16em] px-4 sm:px-8 whitespace-nowrap ${wordClass}`}
+                  >
+                    {wordText}
+                  </span>
+                  <span className="marquee-sparkle-separator text-xs sm:text-sm px-2 sm:px-4 select-none" aria-hidden="true">
+                    ✦
+                  </span>
                 </span>
-                <span className="text-[#db2979]/40 text-xl sm:text-3xl md:text-4xl px-2 select-none">
-                  ✦
-                </span>
-              </span>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
@@ -694,9 +718,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      <ScrollToTop />
-      <Footer />
     </div>
   );
 };

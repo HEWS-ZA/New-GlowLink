@@ -1,6 +1,6 @@
 {
   "name": "GlowLink",
-  "description": "Smart LED wearable connectivity and glow control platform.",
+  "description": "South Africa's premier curated luxury beauty and cosmetics booking atelier marketplace.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

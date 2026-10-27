@@ -12,6 +12,7 @@ export interface Booking {
   notes?: string;
   status: "Confirmed" | "Pending" | "Completed" | "Cancelled";
   createdAt: string;
+  isDemo?: boolean;
 }
 
 export interface CustomerRecord {
@@ -24,11 +25,12 @@ export interface CustomerRecord {
   totalSpent: string;
   lastVisit: string;
   services: string[];
+  isDemo?: boolean;
 }
 
-const DEFAULT_BOOKINGS: Booking[] = [
+const DEMO_BOOKINGS: Booking[] = [
   {
-    id: "b_1",
+    id: "demo_b_1",
     artisanId: "1",
     artisanName: "Thandi Mthembu",
     serviceName: "Haute Bridal Atelier",
@@ -40,9 +42,10 @@ const DEFAULT_BOOKINGS: Booking[] = [
     clientPhone: "+27 82 123 4567",
     status: "Confirmed",
     createdAt: new Date().toISOString(),
+    isDemo: true,
   },
   {
-    id: "b_2",
+    id: "demo_b_2",
     artisanId: "1",
     artisanName: "Thandi Mthembu",
     serviceName: "Editorial Glam Session",
@@ -54,9 +57,10 @@ const DEFAULT_BOOKINGS: Booking[] = [
     clientPhone: "+27 83 234 5678",
     status: "Pending",
     createdAt: new Date().toISOString(),
+    isDemo: true,
   },
   {
-    id: "b_3",
+    id: "demo_b_3",
     artisanId: "1",
     artisanName: "Thandi Mthembu",
     serviceName: "Minimalist Signature Glow",
@@ -68,10 +72,11 @@ const DEFAULT_BOOKINGS: Booking[] = [
     clientPhone: "+27 84 345 6789",
     status: "Confirmed",
     createdAt: new Date().toISOString(),
+    isDemo: true,
   },
 ];
 
-const DEFAULT_CUSTOMERS: CustomerRecord[] = [
+const DEMO_CUSTOMERS: CustomerRecord[] = [
   {
     id: 1,
     name: "Sarah Johnson",
@@ -82,6 +87,7 @@ const DEFAULT_CUSTOMERS: CustomerRecord[] = [
     totalSpent: "R6,400",
     lastVisit: "2026-10-10",
     services: ["Bridal Makeup", "Glam Session", "Natural Glow"],
+    isDemo: true,
   },
   {
     id: 2,
@@ -93,6 +99,7 @@ const DEFAULT_CUSTOMERS: CustomerRecord[] = [
     totalSpent: "R3,750",
     lastVisit: "2026-10-08",
     services: ["Evening Styling", "Natural Glow"],
+    isDemo: true,
   },
   {
     id: 3,
@@ -104,6 +111,7 @@ const DEFAULT_CUSTOMERS: CustomerRecord[] = [
     totalSpent: "R9,600",
     lastVisit: "2026-10-12",
     services: ["Bridal Makeup", "Photoshoot Styling", "Evening Look"],
+    isDemo: true,
   },
   {
     id: 4,
@@ -115,6 +123,7 @@ const DEFAULT_CUSTOMERS: CustomerRecord[] = [
     totalSpent: "R4,800",
     lastVisit: "2026-10-05",
     services: ["Natural Glow", "Glam Session"],
+    isDemo: true,
   },
   {
     id: 5,
@@ -126,23 +135,27 @@ const DEFAULT_CUSTOMERS: CustomerRecord[] = [
     totalSpent: "R8,000",
     lastVisit: "2026-10-14",
     services: ["Bridal Atelier", "Evening Styling", "Editorial Session"],
+    isDemo: true,
   },
 ];
 
 const BOOKINGS_KEY = "glowlink_bookings";
 const CUSTOMERS_KEY = "glowlink_customers";
 
+/**
+ * Never seed default data for unauthenticated visitors!
+ * Returns empty array if no bookings exist.
+ */
 export function getStoredBookings(): Booking[] {
-  if (typeof window === "undefined") return DEFAULT_BOOKINGS;
+  if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(BOOKINGS_KEY);
     if (!raw) {
-      localStorage.setItem(BOOKINGS_KEY, JSON.stringify(DEFAULT_BOOKINGS));
-      return DEFAULT_BOOKINGS;
+      return [];
     }
     return JSON.parse(raw);
   } catch {
-    return DEFAULT_BOOKINGS;
+    return [];
   }
 }
 
@@ -182,17 +195,20 @@ export function cancelBooking(id: string) {
   updateBookingStatus(id, "Cancelled");
 }
 
+/**
+ * Never seed default customer data for unauthenticated visitors!
+ * Returns empty array if no customer records exist.
+ */
 export function getStoredCustomers(): CustomerRecord[] {
-  if (typeof window === "undefined") return DEFAULT_CUSTOMERS;
+  if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(CUSTOMERS_KEY);
     if (!raw) {
-      localStorage.setItem(CUSTOMERS_KEY, JSON.stringify(DEFAULT_CUSTOMERS));
-      return DEFAULT_CUSTOMERS;
+      return [];
     }
     return JSON.parse(raw);
   } catch {
-    return DEFAULT_CUSTOMERS;
+    return [];
   }
 }
 
@@ -223,4 +239,30 @@ function syncCustomerRecord(booking: Booking) {
   if (typeof window !== "undefined") {
     localStorage.setItem(CUSTOMERS_KEY, JSON.stringify(customers));
   }
+}
+
+/**
+ * Explicitly seeds demo bookings and clients ONLY after an artisan logs in.
+ * Clearly tagged with isDemo: true.
+ */
+export function seedDemoArtisanData() {
+  if (typeof window === "undefined") return;
+  const existingBookings = localStorage.getItem(BOOKINGS_KEY);
+  if (!existingBookings) {
+    localStorage.setItem(BOOKINGS_KEY, JSON.stringify(DEMO_BOOKINGS));
+  }
+  const existingCustomers = localStorage.getItem(CUSTOMERS_KEY);
+  if (!existingCustomers) {
+    localStorage.setItem(CUSTOMERS_KEY, JSON.stringify(DEMO_CUSTOMERS));
+  }
+}
+
+/**
+ * Clears all cached artisan data on sign-out so no residual business data persists.
+ */
+export function clearArtisanData() {
+  if (typeof window === "undefined") return;
+  localStorage.removeItem(BOOKINGS_KEY);
+  localStorage.removeItem(CUSTOMERS_KEY);
+  localStorage.removeItem("glowlink_notifications");
 }

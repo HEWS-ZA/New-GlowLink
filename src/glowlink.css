@@ -400,7 +400,7 @@ textarea::placeholder {
   box-shadow: 0 12px 28px -6px rgba(0, 0, 0, 0.5);
 }
 
-/* === GLOWLINK INFINITE RIGHT-TO-LEFT MARQUEE === */
+/* === GLOWLINK INFINITE RIGHT-TO-LEFT MARQUEE (QUIET EDITORIAL TEXTURE) === */
 @keyframes glowlinkMarquee {
   0% {
     transform: translate3d(0, 0, 0);
@@ -413,7 +413,7 @@ textarea::placeholder {
 .animate-glowlink-marquee {
   display: flex;
   width: max-content;
-  animation: glowlinkMarquee 26s linear infinite;
+  animation: glowlinkMarquee 50s linear infinite;
   will-change: transform;
 }
 
@@ -421,8 +421,53 @@ textarea::placeholder {
   animation-play-state: paused;
 }
 
-.glowlink-brand-text {
-  color: #db2979 !important;
+@media (prefers-reduced-motion: reduce) {
+  .animate-glowlink-marquee {
+    animation: none !important;
+  }
+}
+
+/* Style A: Alternating Pink Outline & 45% Opacity Solid */
+.marquee-text-outline {
+  -webkit-text-stroke: 1px #db2979;
+  color: transparent;
+  transition: opacity 0.3s ease;
+}
+
+.marquee-text-solid {
+  color: rgba(219, 41, 121, 0.45);
+  -webkit-text-stroke: 0;
+  transition: opacity 0.3s ease;
+}
+
+.dark .marquee-text-outline {
+  -webkit-text-stroke: 1px rgba(219, 41, 121, 0.85);
+  color: transparent;
+}
+
+.dark .marquee-text-solid {
+  color: rgba(219, 41, 121, 0.48);
+}
+
+/* Style B: Wordmark treatment */
+.marquee-wordmark-outline {
+  -webkit-text-stroke: 1px #db2979;
+  color: transparent;
+}
+
+.marquee-wordmark-solid {
+  color: rgba(219, 41, 121, 0.5);
+  -webkit-text-stroke: 0;
+}
+
+.marquee-sparkle-separator {
+  color: rgba(219, 41, 121, 0.4);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  vertical-align: middle;
+  transform: translateY(-0.08em);
 }
 
 /* === HERO ANIME.JS V4 ENHANCEMENT STYLES === */

@@ -1,8 +1,5 @@
 import { useState, useMemo } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
 import { Search as SearchIcon, MapPin, Star, Filter, ArrowRight, Sparkles } from "lucide-react";
 import { searchArtisans } from "@/services/artisanStore";
 import { triggerHaptic } from "@/services/haptics";
@@ -49,9 +46,7 @@ const Search = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-[#17111D] text-[#501854] dark:text-[#D4C7E1] min-h-screen selection:bg-[#DB2777] selection:text-white transition-colors duration-300">
-      <Header />
-
+    <div className="w-full">
       <section className="pt-28 sm:pt-36 pb-8 sm:pb-12 px-4 sm:px-6 md:px-12 border-b border-[#EFBDEB] dark:border-[#3B3237]">
         <div className="max-w-7xl mx-auto">
           <div className="text-center max-w-3xl mx-auto mb-10">
@@ -241,9 +236,6 @@ const Search = () => {
           </div>
         )}
       </section>
-
-      <ScrollToTop />
-      <Footer />
     </div>
   );
 };

@@ -1,8 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
 import { Upload, Sparkles, Check, ArrowRight, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { registerNewArtisan } from "@/services/artisanStore";
@@ -56,9 +53,7 @@ const RegisterArtist = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-[#17111D] text-[#501854] dark:text-[#D4C7E1] min-h-screen selection:bg-[#DB2777] selection:text-white transition-colors duration-300">
-      <Header />
-
+    <div className="w-full">
       <section className="pt-28 sm:pt-36 pb-16 sm:pb-20 px-4 sm:px-6 md:px-12 border-b border-[#EFBDEB] dark:border-[#3B3237]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8 sm:mb-10">
@@ -378,9 +373,6 @@ const RegisterArtist = () => {
           </div>
         </div>
       </section>
-
-      <ScrollToTop />
-      <Footer />
     </div>
   );
 };

@@ -133,14 +133,16 @@ export function useHeroAnimation({
         state.timeoutId = setTimeout(tick, HERO_ANIMATION_CONFIG.typewriterTypeSpeed);
       } else {
         state.charIndex--;
-        setPlaceholderText(currentWord.slice(0, state.charIndex));
-
-        if (state.charIndex === 0) {
+        if (state.charIndex <= 0) {
           state.isDeleting = false;
           state.serviceIndex = (state.serviceIndex + 1) % services.length;
-          state.timeoutId = setTimeout(tick, 400);
+          const nextWord = services[state.serviceIndex];
+          state.charIndex = 1;
+          setPlaceholderText(nextWord.slice(0, 1));
+          state.timeoutId = setTimeout(tick, 200);
           return;
         }
+        setPlaceholderText(currentWord.slice(0, state.charIndex));
         state.timeoutId = setTimeout(tick, HERO_ANIMATION_CONFIG.typewriterDeleteSpeed);
       }
     };

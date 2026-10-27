@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Mail, Lock, Eye, EyeOff, Sparkles, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 import { loginArtisan } from "@/services/authStore";
 import { triggerHaptic } from "@/services/haptics";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectParam = searchParams.get("redirect");
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
@@ -27,7 +27,8 @@ const Login = () => {
 
     loginArtisan(formData.email);
     toast.success("Welcome back to your Atelier Portal.");
-    navigate("/dashboard");
+    const targetUrl = redirectParam ? decodeURIComponent(redirectParam) : "/dashboard";
+    navigate(targetUrl, { replace: true });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,10 +40,7 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-white dark:bg-[#17111D] text-[#501854] dark:text-[#D4C7E1] min-h-screen selection:bg-[#DB2777] selection:text-white flex flex-col justify-between transition-colors duration-300">
-      <Header />
-
-      <div className="flex-grow flex items-center justify-center px-4 sm:px-6 pt-28 sm:pt-36 pb-28 md:pb-20">
+    <div className="w-full flex items-center justify-center px-4 sm:px-6 pt-28 sm:pt-36 pb-28 md:pb-20">
         <div className="auth-card w-full max-w-md border border-[#EFBDEB] dark:border-[#3B3237] bg-white dark:bg-[#241C2B] p-5 sm:p-8 md:p-12 rounded-2xl sm:rounded-3xl shadow-xl">
           <div className="text-center mb-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-2xs mb-3">
@@ -145,9 +143,6 @@ const Login = () => {
           </form>
         </div>
       </div>
-
-      <Footer />
-    </div>
   );
 };
 
