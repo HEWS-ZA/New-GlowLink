@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams, Link } from "react-router-dom";
 import { Mail, Lock, Sparkles, ArrowRight, Phone, User as UserIcon } from "lucide-react";
 import { toast } from "sonner";
+import { GlowLinkLogo } from "@/components/GlowLinkLogo";
 import { loginCustomer, DEMO_CREDENTIALS } from "@/services/authStore";
 import { triggerHaptic } from "@/services/haptics";
 
@@ -57,11 +58,15 @@ export const CustomerAuth = ({ initialMode = "login" }: CustomerAuthProps) => {
     <div className="w-full flex items-center justify-center px-4 sm:px-6 pt-24 sm:pt-32 pb-24 md:pb-16 min-h-[80vh]">
       <div className="auth-card w-full max-w-md border border-[#EFBDEB] dark:border-[#3B3237] bg-white dark:bg-[#241C2B] p-5 sm:p-8 md:p-10 rounded-2xl sm:rounded-3xl shadow-xl">
         <div className="text-center mb-6 sm:mb-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-2xs mb-3">
-            <Sparkles className="w-3.5 h-3.5 text-[#DB2777]" />
-            <span className="text-[11px] uppercase tracking-[0.2em] text-[#501854] dark:text-[#D4C7E1] font-semibold">
-              Client Portal
-            </span>
+          <Link to="/" className="inline-block mb-3 transition-transform active:scale-95">
+            <GlowLinkLogo variant="mark" size="md" />
+          </Link>
+          <div className="block">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-2xs mb-3">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-[#501854] dark:text-[#D4C7E1] font-semibold">
+                Client Portal
+              </span>
+            </div>
           </div>
           <h1 className="text-2xl sm:text-3xl font-serif text-[#501854] dark:text-[#D4C7E1] mb-2 font-medium">
             {isRegister ? "Create Client Account" : "Welcome Back"}

@@ -1,5 +1,6 @@
 import { Link, useSearchParams } from "react-router-dom";
-import { Sparkles, User, Briefcase, ArrowRight } from "lucide-react";
+import { User, Briefcase, ArrowRight } from "lucide-react";
+import { GlowLinkLogo } from "@/components/GlowLinkLogo";
 import { triggerHaptic } from "@/services/haptics";
 
 export const LoginHub = () => {
@@ -10,8 +11,9 @@ export const LoginHub = () => {
   return (
     <div className="w-full flex items-center justify-center px-4 sm:px-6 pt-24 sm:pt-32 pb-24 md:pb-16 min-h-[80vh]">
       <div className="w-full max-w-xl mx-auto text-center">
+        <GlowLinkLogo variant="stacked" size="md" className="mb-6 mx-auto" />
+
         <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-xs mb-4">
-          <Sparkles className="w-3.5 h-3.5 text-[#DB2777]" />
           <span className="text-[11px] font-semibold tracking-[0.2em] text-[#501854] dark:text-[#D4C7E1] uppercase">
             GlowLink Portals
           </span>

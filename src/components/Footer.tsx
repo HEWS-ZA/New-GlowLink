@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Sparkles, ArrowRight, Instagram, Facebook, Twitter } from "lucide-react";
+import { ArrowRight, Instagram, Facebook, Twitter } from "lucide-react";
+import { GlowLinkLogo } from "@/components/GlowLinkLogo";
 import { toast } from "sonner";
 import { triggerHaptic } from "@/services/haptics";
 
@@ -23,12 +24,9 @@ const Footer = () => {
           <div className="md:col-span-1">
             <Link
               to="/"
-              className="text-2xl text-[#501854] dark:text-[#D4C7E1] tracking-tight font-serif italic mb-4 inline-flex items-center gap-2 group"
+              className="mb-4 inline-flex items-center group transition-transform duration-300 active:scale-95"
             >
-              <div className="w-7 h-7 rounded-full bg-[#501854] dark:bg-[#DB2777] text-white flex items-center justify-center shadow-xs">
-                <Sparkles className="w-3.5 h-3.5 text-pink-200" />
-              </div>
-              <span className="font-medium">GlowLink</span>
+              <GlowLinkLogo variant="full" size="md" />
             </Link>
             <p className="text-sm leading-relaxed mb-6 max-w-xs text-[#7E4882] dark:text-[#A695B8] font-light">
               Connecting beauty with mastery across South Africa. Redefining personal aesthetics through curated artisan talent and seamless reservations.

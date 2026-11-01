@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { GlowLinkLogo } from "@/components/GlowLinkLogo";
 import { triggerHaptic } from "@/services/haptics";
 import { useAuth, logoutArtisan } from "@/services/authStore";
 import { toast } from "sonner";
@@ -90,20 +91,10 @@ export const ConsoleHeader = () => {
             <Link
               to="/dashboard"
               onClick={() => triggerHaptic(10)}
-              className="flex items-center gap-1.5 sm:gap-2 group transition-transform duration-300 active:scale-95 shrink-0"
+              className="flex items-center transition-transform duration-300 active:scale-95 shrink-0"
               aria-label="Atelier Console Home"
             >
-              <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#501854] dark:bg-[#DB2777] text-white flex items-center justify-center shadow-xs group-hover:scale-105 transition-transform duration-300">
-                <Sparkles className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-pink-200 group-hover:rotate-12 transition-transform duration-500" />
-              </div>
-              <div className="flex items-baseline gap-1.5">
-                <span className="text-base sm:text-xl font-serif italic tracking-tight text-[#501854] dark:text-[#D4C7E1] font-medium">
-                  GlowLink
-                </span>
-                <span className="hidden xs:inline-block text-[9px] uppercase tracking-[0.2em] px-2 py-0.5 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] text-[#501854] dark:text-[#D4C7E1] font-semibold border border-[#EFBDEB] dark:border-[#3B3237]">
-                  Atelier
-                </span>
-              </div>
+              <GlowLinkLogo variant="full" size="md" badgeText="Atelier" />
             </Link>
 
             {/* Console Navigation Links (Only existing destinations: Overview & Clientele; NO dead links) */}

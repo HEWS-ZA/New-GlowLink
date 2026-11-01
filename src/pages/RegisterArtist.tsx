@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Upload, Sparkles, Check, ArrowRight, ArrowLeft } from "lucide-react";
+import { GlowLinkLogo } from "@/components/GlowLinkLogo";
 import { toast } from "sonner";
 import { registerNewArtisan } from "@/services/artisanStore";
 import { loginArtisan } from "@/services/authStore";
@@ -57,11 +58,16 @@ const RegisterArtist = () => {
       <section className="pt-28 sm:pt-36 pb-16 sm:pb-20 px-4 sm:px-6 md:px-12 border-b border-[#EFBDEB] dark:border-[#3B3237]">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-8 sm:mb-10">
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-xs mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-[#DB2777]" />
-              <span className="text-[11px] uppercase tracking-[0.2em] text-[#501854] dark:text-[#D4C7E1] font-semibold">
-                Atelier Representation
-              </span>
+            <Link to="/" className="inline-block mb-3 transition-transform active:scale-95">
+              <GlowLinkLogo variant="mark" size="md" />
+            </Link>
+            <div className="block">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-xs mb-3">
+                <Sparkles className="w-3.5 h-3.5 text-[#DB2777]" />
+                <span className="text-[11px] uppercase tracking-[0.2em] text-[#501854] dark:text-[#D4C7E1] font-semibold">
+                  Atelier Representation
+                </span>
+              </div>
             </div>
             <h1 className="text-2xl sm:text-3xl md:text-5xl font-serif text-[#501854] dark:text-[#D4C7E1] mb-3">
               Join <span className="italic font-normal text-[#DB2777]">GlowLink</span>

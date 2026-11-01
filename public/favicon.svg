@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <linearGradient id="bgGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3D1244" />
+      <stop offset="50%" stop-color="#501854" />
+      <stop offset="100%" stop-color="#210826" />
+    </linearGradient>
+    <linearGradient id="pinkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FDF2F8" />
+      <stop offset="35%" stop-color="#F472B6" />
+      <stop offset="75%" stop-color="#DB2777" />
+      <stop offset="100%" stop-color="#9D174D" />
+    </linearGradient>
+    <linearGradient id="goldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFFBEB" />
+      <stop offset="40%" stop-color="#FDE68A" />
+      <stop offset="75%" stop-color="#F59E0B" />
+      <stop offset="100%" stop-color="#D97706" />
+    </linearGradient>
+    <filter id="subtleGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.8" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Luxury Velvet Plum Medallion -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGlow)" stroke="#EFBDEB" stroke-width="1.2" stroke-opacity="0.55" />
+
+  <!-- Ambient Radiant Core -->
+  <circle cx="32" cy="32" r="20" fill="#DB2777" opacity="0.22" filter="url(#subtleGlow)" />
+
+  <!-- Interlocking G & L Luxury Atelier Link -->
+  <!-- Left G-Curve -->
+  <path d="M 28 19 A 13 13 0 1 0 35 41 L 35 34 L 28 34" fill="none" stroke="url(#pinkGradient)" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round" />
+
+  <!-- Right Linking Loop -->
+  <path d="M 35 21 A 13 13 0 1 1 29 42" fill="none" stroke="url(#goldGradient)" stroke-width="3.8" stroke-linecap="round" />
+
+  <!-- Central Radiating Starlight Diamond -->
+  <g transform="translate(32, 32)">
+    <!-- Radiant Diamond Star -->
+    <path d="M 0 -7.5 Q 0 0 7.5 0 Q 0 0 0 7.5 Q 0 0 -7.5 0 Q 0 0 0 -7.5 Z" fill="#FFFFFF" filter="url(#subtleGlow)" />
+    <!-- Golden Core -->
+    <path d="M 0 -4.5 Q 0 0 4.5 0 Q 0 0 0 4.5 Q 0 0 -4.5 0 Q 0 0 0 -4.5 Z" fill="url(#goldGradient)" />
+    <circle cx="0" cy="0" r="1.6" fill="#FFFFFF" />
+  </g>
+</svg>
