@@ -163,12 +163,37 @@ const Home = () => {
       {/* Hero Section */}
       <section 
         ref={heroSectionRef}
-        className="relative w-full flex flex-col justify-center pt-24 sm:pt-32 pb-12 sm:pb-16 px-3.5 sm:px-8 md:px-10 max-w-7xl mx-auto overflow-clip"
+        className="relative w-full overflow-clip isolate"
       >
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-auto">
-          {/* Left Column: Vision & Brand statement */}
-          <div className="lg:col-span-7 space-y-5 sm:space-y-6">
-            <div className="hero-eyebrow inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-xs backdrop-blur-md">
+        {/* Dedicated Background Bloom Layer (Anime.js v4) */}
+        <div 
+          className="hero-bloom-container absolute inset-0 pointer-events-none z-0 overflow-hidden" 
+          aria-hidden="true"
+        >
+          {/* Mode A: Main Color Bloom Circle (Origin computed dynamically from photo card center) */}
+          <div className="hero-bloom-main" />
+
+          {/* Secondary Trailing Ripple Ring 1 */}
+          <div className="hero-bloom-ripple-1" />
+
+          {/* Secondary Trailing Ripple Ring 2 */}
+          <div className="hero-bloom-ripple-2" />
+
+          {/* Mode B: Optional Image Bleed Layer (revealed via circular clip path) */}
+          <div 
+            className="hero-bloom-bleed"
+            style={{
+              backgroundImage: "url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=1600&q=80')",
+            }}
+          />
+        </div>
+
+        {/* Hero Content Container */}
+        <div className="relative z-10 w-full max-w-7xl mx-auto flex flex-col justify-center pt-24 sm:pt-32 pb-12 sm:pb-16 px-3.5 sm:px-8 md:px-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center my-auto">
+            {/* Left Column: Vision & Brand statement */}
+            <div className="lg:col-span-7 space-y-5 sm:space-y-6">
+              <div className="hero-eyebrow inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-[#FAF2FA] dark:bg-[#372E3E] border border-[#EFBDEB] dark:border-[#3B3237] shadow-xs backdrop-blur-md">
               <Sparkles className="hero-eyebrow-sparkle w-3.5 h-3.5 text-[#DB2777]" />
               <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-semibold text-[#501854] dark:text-[#D4C7E1]">
                 South Africa’s Curated Beauty Atelier
@@ -286,69 +311,69 @@ const Home = () => {
           {/* Right Column: Hero Visual Card with capped height and clipped floating elements */}
           <div className="lg:col-span-5 w-full">
             <div className="relative group max-w-[340px] xs:max-w-[380px] sm:max-w-md lg:max-w-none mx-auto overflow-hidden sm:overflow-visible">
-              {/* Ambient Floating Cosmetic Icons & Twinkling Sparkles (Pure line icons with soft glow) */}
-              <div className="absolute inset-0 pointer-events-none z-20 overflow-hidden sm:overflow-visible">
-                {/* 1. Floating Perfume Flacon - Top Right */}
+              {/* Ambient Floating Cosmetic Icons & Twinkling Sparkles (Positioned outside card with >= 12px clearance, z-0) */}
+              <div className="hero-floating-icons-layer absolute inset-0 pointer-events-none z-0 overflow-hidden sm:overflow-visible">
+                {/* 1. Floating Perfume Flacon - Outside Top-Right */}
                 <div
-                  className="hero-floating-icon absolute top-3 right-3 sm:top-2 sm:-right-3 lg:top-3 lg:-right-4 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.35)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.45)] opacity-90 transition-transform select-none"
+                  className="hero-floating-icon absolute -top-5 -right-4 sm:-top-7 sm:-right-7 lg:-top-8 lg:-right-8 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.35)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.45)] opacity-90 transition-transform select-none pointer-events-none"
                   data-parallax-depth="0.9"
                 >
                   <PerfumeBottleIcon style={{ width: "22px", height: "22px" }} />
                 </div>
 
-                {/* 2. Floating Nail Polish - Bottom Left */}
+                {/* 2. Floating Nail Polish - Outside Mid-Left */}
                 <div
-                  className="hero-floating-icon absolute bottom-14 left-3 sm:bottom-16 sm:-left-3 lg:bottom-20 lg:-left-4 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.35)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.45)] opacity-85 transition-transform select-none"
+                  className="hero-floating-icon absolute top-28 -left-5 sm:top-36 sm:-left-7 lg:top-40 lg:-left-8 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.35)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.45)] opacity-85 transition-transform select-none pointer-events-none"
                   data-parallax-depth="0.75"
                 >
                   <NailPolishIcon style={{ width: "20px", height: "20px" }} />
                 </div>
 
-                {/* 3. Floating Compact Mirror - Top Left (Desktop/Tablet only) */}
+                {/* 3. Floating Compact Mirror - Outside Top-Left (Desktop/Tablet only) */}
                 <div
-                  className="hero-floating-icon hidden sm:block absolute top-6 left-4 sm:left-6 lg:top-7 lg:left-6 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.35)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.45)] opacity-90 transition-transform select-none"
+                  className="hero-floating-icon hidden sm:block absolute -top-5 -left-4 sm:-top-7 sm:-left-7 lg:-top-8 lg:-left-8 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.35)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.45)] opacity-90 transition-transform select-none pointer-events-none"
                   data-parallax-depth="1.1"
                 >
                   <CompactMirrorIcon style={{ width: "22px", height: "22px" }} />
                 </div>
 
-                {/* 4. Floating Comb & Shears - Middle Right (Desktop only) */}
+                {/* 4. Floating Comb & Shears - Outside Mid-Right (Desktop only) */}
                 <div
-                  className="hero-floating-icon hidden md:block absolute top-1/2 -right-2 lg:-right-3 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.3)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.4)] opacity-80 transition-transform select-none"
+                  className="hero-floating-icon hidden md:block absolute top-1/3 -right-5 sm:top-1/3 sm:-right-7 lg:top-1/3 lg:-right-8 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.3)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.4)] opacity-80 transition-transform select-none pointer-events-none"
                   data-parallax-depth="0.6"
                 >
                   <CombScissorsIcon style={{ width: "22px", height: "22px" }} />
                 </div>
 
-                {/* 5. Floating Mascara Wand - Lower Right (Desktop only) */}
+                {/* 5. Floating Mascara Wand - Outside Lower-Left (Safely far away from rating card arrow button) */}
                 <div
-                  className="hero-floating-icon hidden md:block absolute bottom-12 right-6 lg:right-8 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.3)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.4)] opacity-80 transition-transform select-none"
+                  className="hero-floating-icon hidden md:block absolute -bottom-5 -left-5 sm:-bottom-6 sm:-left-7 lg:-bottom-7 lg:-left-8 text-[#501854] dark:text-[#D4C7E1] drop-shadow-[0_2px_10px_rgba(219,39,119,0.3)] dark:drop-shadow-[0_2px_12px_rgba(219,39,119,0.4)] opacity-80 transition-transform select-none pointer-events-none"
                   data-parallax-depth="0.8"
                 >
                   <MascaraWandIcon style={{ width: "21px", height: "21px" }} />
                 </div>
 
-                {/* 6. Twinkling Sparkle 1 - Upper Center */}
+                {/* 6. Twinkling Sparkle 1 - Outside Upper-Center */}
                 <div
-                  className="hero-floating-icon absolute top-4 right-1/4 text-[#DB2777] drop-shadow-[0_2px_8px_rgba(219,39,119,0.4)] opacity-95 transition-transform select-none"
+                  className="hero-floating-icon absolute -top-5 right-1/4 sm:-top-6 sm:right-1/4 text-[#DB2777] drop-shadow-[0_2px_8px_rgba(219,39,119,0.4)] opacity-95 transition-transform select-none pointer-events-none"
                   data-parallax-depth="1.2"
                 >
                   <SparkleIcon style={{ width: "16px", height: "16px" }} className="animate-pulse" />
                 </div>
 
-                {/* 7. Twinkling Sparkle 2 - Lower Center (Desktop/Tablet only) */}
+                {/* 7. Twinkling Sparkle 2 - Outside Lower-Right Edge (Desktop/Tablet only) */}
                 <div
-                  className="hero-floating-icon hidden sm:block absolute bottom-4 left-1/3 text-[#DB2777] drop-shadow-[0_2px_8px_rgba(219,39,119,0.4)] opacity-80 transition-transform select-none"
+                  className="hero-floating-icon hidden sm:block absolute -bottom-6 right-6 sm:-bottom-7 sm:right-8 lg:-bottom-8 lg:right-10 text-[#DB2777] drop-shadow-[0_2px_8px_rgba(219,39,119,0.4)] opacity-80 transition-transform select-none pointer-events-none"
                   data-parallax-depth="0.5"
                 >
                   <SparkleIcon style={{ width: "15px", height: "15px" }} />
                 </div>
               </div>
 
-              {/* Main Visual Card Container with capped height on mobile */}
+              {/* Main Visual Card Container with capped height on mobile (z-10) */}
               <div 
                 ref={visualCardRef}
-                className="relative rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-[0_25px_60px_-15px_rgba(80,24,84,0.15)] dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6)] border-3 sm:border-4 border-[#EFBDEB] dark:border-[#3B3237] aspect-[4/5] max-h-[380px] sm:max-h-[460px] lg:max-h-[580px] w-full bg-[#FAF2FA] dark:bg-[#241C2B] hero-card-glow transition-shadow duration-500"
+                className="relative z-10 rounded-[2rem] sm:rounded-[2.5rem] overflow-hidden shadow-[0_25px_60px_-15px_rgba(80,24,84,0.15)] dark:shadow-[0_25px_60px_-15px_rgba(0,0,0,0.6)] border-3 sm:border-4 border-[#EFBDEB] dark:border-[#3B3237] aspect-[4/5] max-h-[380px] sm:max-h-[460px] lg:max-h-[580px] w-full bg-[#FAF2FA] dark:bg-[#241C2B] hero-card-glow transition-shadow duration-500"
               >
                 <img
                   ref={photoRef}
@@ -365,7 +390,7 @@ const Home = () => {
                   </span>
                 </div>
 
-                <div className="hero-rating-card absolute bottom-6 inset-x-6 glass-panel p-5 rounded-3xl border border-[#EFBDEB] dark:border-[#3B3237] shadow-lg z-10">
+                <div className="hero-rating-card absolute bottom-6 inset-x-6 glass-panel p-5 rounded-3xl border border-[#EFBDEB] dark:border-[#3B3237] shadow-lg z-20">
                   <div className="flex items-center justify-between">
                     <div>
                       <div className="flex items-center gap-1 text-[#DB2777] mb-1">
@@ -387,7 +412,7 @@ const Home = () => {
                         triggerHaptic(10);
                         navigate("/search");
                       }}
-                      className="w-10 h-10 rounded-full bg-[#501854] dark:bg-[#DB2777] text-white flex items-center justify-center hover:opacity-90 transition-colors shadow-xs"
+                      className="w-10 h-10 rounded-full bg-[#501854] dark:bg-[#DB2777] text-white flex items-center justify-center hover:opacity-90 transition-colors shadow-xs relative z-30"
                       aria-label="View artisans"
                     >
                       <ArrowRight size={16} />
@@ -398,7 +423,8 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
       {/* Infinite Looping GLOWLINK Marquee Banner under Hero (Quiet Editorial Texture) */}
       <section 

@@ -168,6 +168,39 @@ GlowLink currently connects verified master stylists across four major metropoli
 
 ---
 
+---
+
+## Vercel Deployment
+
+GlowLink is configured for zero-config, production-grade deployment on Vercel:
+
+### 1. Deploy via Vercel Git Integration (Recommended)
+1. Push this repository to GitHub, GitLab, or Bitbucket.
+2. Go to [vercel.com/new](https://vercel.com/new) and import the repository.
+3. Vercel automatically detects the **Vite** framework from `vercel.json`.
+4. Build command: `npm run build`
+5. Output directory: `dist`
+6. Click **Deploy**.
+
+### 2. Deploy via Vercel CLI
+```bash
+# Install Vercel CLI globally
+npm install -g vercel
+
+# Log in and deploy
+vercel
+
+# Deploy to production
+vercel --prod
+```
+
+### Included Vercel Optimizations (`vercel.json`)
+- **SPA Rewrites**: All deep routes (`/search`, `/artisan/:id`, `/portal`, `/booking/:id`) seamlessly resolve to `/index.html` preventing 404s on hard refresh.
+- **Immutable Asset Caching**: 1-year cache headers (`Cache-Control: public, max-age=31536000, immutable`) for hashed `/assets/*` bundles.
+- **Security Headers**: `X-Content-Type-Options: nosniff`, `X-Frame-Options: SAMEORIGIN`, and `X-XSS-Protection`.
+
+---
+
 ## License
 
 Private & Proprietary — GlowLink South Africa © 2026. All rights reserved.

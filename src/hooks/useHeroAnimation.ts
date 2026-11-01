@@ -12,6 +12,41 @@ import {
 
 /**
  * =======================================================================
+ * BACKGROUND BLOOM ANIMATION CONSTANTS (Anime.js v4)
+ * Tunable settings for the hero background atmospheric bloom animation
+ * =======================================================================
+ */
+export const BLOOM_CONFIG = {
+  // Trigger mode: 'intro' (plays once after card reveal), 'hover' (on card hover/focus), or 'scroll' (scrubbed by scroll progress)
+  trigger: "intro" as "intro" | "hover" | "scroll",
+
+  // Bloom visual mode: 'A' (Color Bloom gradient from photo palette) or 'B' (Image Bleed with blurred photo copy)
+  mode: "A" as "A" | "B",
+
+  // Animation duration in ms (~1800ms per specification)
+  duration: 1800,
+
+  // Anime v4 standard string name (soft exponential deceleration)
+  ease: "outExpo" as const,
+
+  // Delay before bloom starts in 'intro' mode (synchronizes smoothly with visual card reveal)
+  delay: 950,
+
+  // Multiplier for farthest corner distance to guarantee seamless coverage at any aspect ratio
+  scaleFallback: 1.08,
+
+  // Secondary trailing ripple rings delay offset in ms for visual depth
+  ripple1DelayOffset: 160,
+  ripple2DelayOffset: 340,
+
+  // Settled ambient breathing state (slow subtle drift after intro bloom settles)
+  ambientBreathing: true,
+  ambientDuration: 8500, // ms per full breath cycle
+  ambientScaleMax: 1.035, // Low amplitude subtle breathing
+};
+
+/**
+ * =======================================================================
  * TUNABLE ANIMATION & INTERACTION CONSTANTS
  * Adjust these values to tune speeds, intensity, parallax, and typewriter
  * =======================================================================
@@ -174,6 +209,11 @@ export function useHeroAnimation({
       if (ratingValRef.current) ratingValRef.current.textContent = "4.98";
       if (ratingCountRef.current)
         ratingCountRef.current.textContent = "(4,200+ clients)";
+      const bloomMain = heroEl.querySelector<HTMLElement>(".hero-bloom-main");
+      if (bloomMain) {
+        bloomMain.style.transform = "scale(1)";
+        bloomMain.style.opacity = "1";
+      }
       return;
     }
 
@@ -184,8 +224,89 @@ export function useHeroAnimation({
     let shimmerAnim: ReturnType<typeof animate> | null = null;
     let kenBurnsAnim: ReturnType<typeof animate> | null = null;
     let arrowNudgeAnim: ReturnType<typeof animate> | null = null;
+    let ambientBloomAnim: ReturnType<typeof animate> | null = null;
     let floatingAnims: Array<ReturnType<typeof animate>> = [];
     let textSplitterInstance: ReturnType<typeof splitText> | null = null;
+
+    // Bloom background elements
+    const bloomMainEl = heroEl.querySelector<HTMLElement>(".hero-bloom-main");
+    const bloomRipple1El = heroEl.querySelector<HTMLElement>(".hero-bloom-ripple-1");
+    const bloomRipple2El = heroEl.querySelector<HTMLElement>(".hero-bloom-ripple-2");
+    const bloomBleedEl = heroEl.querySelector<HTMLElement>(".hero-bloom-bleed");
+
+    // Dynamic geometry calculator: calculates center of visual card relative to hero and farthest corner
+    const calculateBloomGeometry = () => {
+      if (!heroEl || !visualCardRef.current || !bloomMainEl) return null;
+      const heroRect = heroEl.getBoundingClientRect();
+      const cardRect = visualCardRef.current.getBoundingClientRect();
+
+      // Guard against zero dimensions
+      const heroW = heroRect.width || (typeof window !== "undefined" ? window.innerWidth : 1200);
+      const heroH = heroRect.height || 600;
+
+      const cardW = cardRect.width > 0 ? cardRect.width : 380;
+      const cardH = cardRect.height > 0 ? cardRect.height : 480;
+      const cardLeft = cardRect.width > 0 ? cardRect.left : heroRect.left + heroW * 0.7;
+      const cardTop = cardRect.height > 0 ? cardRect.top : heroRect.top + heroH * 0.5;
+
+      // Center of card relative to hero container
+      const originX = cardLeft + cardW / 2 - heroRect.left;
+      const originY = cardTop + cardH / 2 - heroRect.top;
+
+      // Distances from card center to the 4 corners of hero container
+      const d1 = Math.hypot(originX, originY);
+      const d2 = Math.hypot(heroW - originX, originY);
+      const d3 = Math.hypot(originX, heroH - originY);
+      const d4 = Math.hypot(heroW - originX, heroH - originY);
+
+      // Max radius with fallback overscan
+      const maxRadius = Math.max(d1, d2, d3, d4, 750) * BLOOM_CONFIG.scaleFallback;
+      const diameter = Math.ceil(maxRadius * 2);
+
+      return { originX, originY, maxRadius, diameter };
+    };
+
+    const applyBloomGeometry = () => {
+      const geom = calculateBloomGeometry();
+      if (!geom || !bloomMainEl) return;
+      const { originX, originY, maxRadius, diameter } = geom;
+
+      const left = originX - maxRadius;
+      const top = originY - maxRadius;
+
+      bloomMainEl.style.width = `${diameter}px`;
+      bloomMainEl.style.height = `${diameter}px`;
+      bloomMainEl.style.left = `${left.toFixed(1)}px`;
+      bloomMainEl.style.top = `${top.toFixed(1)}px`;
+      bloomMainEl.style.transformOrigin = "center center";
+
+      if (bloomRipple1El) {
+        const r1 = maxRadius * 1.15;
+        const d1 = Math.ceil(r1 * 2);
+        bloomRipple1El.style.width = `${d1}px`;
+        bloomRipple1El.style.height = `${d1}px`;
+        bloomRipple1El.style.left = `${(originX - r1).toFixed(1)}px`;
+        bloomRipple1El.style.top = `${(originY - r1).toFixed(1)}px`;
+        bloomRipple1El.style.transformOrigin = "center center";
+      }
+
+      if (bloomRipple2El) {
+        const r2 = maxRadius * 1.28;
+        const d2 = Math.ceil(r2 * 2);
+        bloomRipple2El.style.width = `${d2}px`;
+        bloomRipple2El.style.height = `${d2}px`;
+        bloomRipple2El.style.left = `${(originX - r2).toFixed(1)}px`;
+        bloomRipple2El.style.top = `${(originY - r2).toFixed(1)}px`;
+        bloomRipple2El.style.transformOrigin = "center center";
+      }
+    };
+
+    // Initialize bloom element geometry and schedule layout passes
+    applyBloomGeometry();
+    if (typeof window !== "undefined") {
+      requestAnimationFrame(applyBloomGeometry);
+      setTimeout(applyBloomGeometry, 120);
+    }
 
     scope.add(() => {
       // 1. Text Splitter for display headline
@@ -406,6 +527,89 @@ export function useHeroAnimation({
         1350
       );
 
+      // L) Background Bloom Animation (Anime.js v4)
+      // Atmospheric color/glow spreads outward from the visual card center to cover the hero background
+      if (bloomMainEl && BLOOM_CONFIG.trigger === "intro") {
+        // Mode A: Color Bloom expanding radially outward
+        mainTimeline.add(
+          bloomMainEl,
+          {
+            scale: [0, 1],
+            opacity: [0, 1],
+            duration: BLOOM_CONFIG.duration,
+            ease: BLOOM_CONFIG.ease,
+            onComplete: () => {
+              // Initiate subtle ambient breathing state on desktop
+              if (
+                BLOOM_CONFIG.ambientBreathing &&
+                typeof window !== "undefined" &&
+                window.innerWidth >= 640 &&
+                heroEl.isConnected
+              ) {
+                ambientBloomAnim = animate(bloomMainEl, {
+                  scale: [1, BLOOM_CONFIG.ambientScaleMax],
+                  opacity: [0.94, 1],
+                  duration: BLOOM_CONFIG.ambientDuration,
+                  alternate: true,
+                  loop: true,
+                  ease: "inOutSine",
+                });
+              }
+            },
+          },
+          BLOOM_CONFIG.delay
+        );
+
+        // Secondary Trailing Ripple Ring 1 (desktop & tablet for rich depth)
+        if (bloomRipple1El && typeof window !== "undefined" && window.innerWidth >= 640) {
+          mainTimeline.add(
+            bloomRipple1El,
+            {
+              scale: [0, 1],
+              opacity: [0, 0.45, 0],
+              duration: Math.round(BLOOM_CONFIG.duration * 0.95),
+              ease: "outQuad",
+            },
+            BLOOM_CONFIG.delay + BLOOM_CONFIG.ripple1DelayOffset
+          );
+        }
+
+        // Secondary Trailing Ripple Ring 2 (desktop & tablet for rich depth)
+        if (bloomRipple2El && typeof window !== "undefined" && window.innerWidth >= 640) {
+          mainTimeline.add(
+            bloomRipple2El,
+            {
+              scale: [0, 1],
+              opacity: [0, 0.3, 0],
+              duration: Math.round(BLOOM_CONFIG.duration * 0.95),
+              ease: "outQuad",
+            },
+            BLOOM_CONFIG.delay + BLOOM_CONFIG.ripple2DelayOffset
+          );
+        }
+
+        // Mode B: Optional Image Bleed layer revealed via circular clip path
+        if (BLOOM_CONFIG.mode === "B" && bloomBleedEl) {
+          const geom = calculateBloomGeometry();
+          if (geom) {
+            const { originX, originY, maxRadius } = geom;
+            mainTimeline.add(
+              bloomBleedEl,
+              {
+                clipPath: [
+                  `circle(0px at ${originX.toFixed(1)}px ${originY.toFixed(1)}px)`,
+                  `circle(${maxRadius.toFixed(1)}px at ${originX.toFixed(1)}px ${originY.toFixed(1)}px)`,
+                ],
+                opacity: [0, 0.75],
+                duration: BLOOM_CONFIG.duration,
+                ease: BLOOM_CONFIG.ease,
+              },
+              BLOOM_CONFIG.delay
+            );
+          }
+        }
+      }
+
       // =====================================================================
       // 3. Ambient & Looping Layers (Starts after or alongside intro)
       // =====================================================================
@@ -493,7 +697,67 @@ export function useHeroAnimation({
         });
         floatingAnims.push(anim);
       });
+
+      // F) Background Bloom Interactive Triggers ('hover' or 'scroll')
+      if (BLOOM_CONFIG.trigger === "hover" && visualCardRef.current && bloomMainEl) {
+        const card = visualCardRef.current;
+        const handleCardEnter = () => {
+          animate(bloomMainEl, {
+            scale: [0, 1],
+            opacity: [0, 1],
+            duration: 1200,
+            ease: "outCubic",
+          });
+          if (bloomRipple1El && typeof window !== "undefined" && window.innerWidth >= 640) {
+            animate(bloomRipple1El, {
+              scale: [0, 1],
+              opacity: [0, 0.45, 0],
+              duration: 1050,
+              ease: "outQuad",
+            });
+          }
+        };
+        const handleCardLeave = () => {
+          animate(bloomMainEl, {
+            scale: [1, 0],
+            opacity: [1, 0],
+            duration: 900,
+            ease: "inOutQuad",
+          });
+        };
+        card.addEventListener("mouseenter", handleCardEnter);
+        card.addEventListener("mouseleave", handleCardLeave);
+        card.addEventListener("focusin", handleCardEnter);
+        card.addEventListener("focusout", handleCardLeave);
+      }
     });
+
+    // Bloom Scroll Trigger Listener
+    let handleBloomScroll: (() => void) | null = null;
+    if (BLOOM_CONFIG.trigger === "scroll" && bloomMainEl) {
+      handleBloomScroll = () => {
+        const rect = heroEl.getBoundingClientRect();
+        const viewH = window.innerHeight;
+        const progress = Math.min(1, Math.max(0, 1 - rect.top / (viewH * 0.6)));
+        bloomMainEl.style.transform = `translate(-50%, -50%) scale(${progress.toFixed(3)})`;
+        bloomMainEl.style.opacity = `${progress.toFixed(3)}`;
+      };
+      window.addEventListener("scroll", handleBloomScroll, { passive: true });
+      handleBloomScroll();
+    }
+
+    // Dynamic Resize & Orientation change handling for bloom coverage
+    const resizeObserver = new ResizeObserver(() => {
+      applyBloomGeometry();
+    });
+    resizeObserver.observe(heroEl);
+    if (visualCardRef.current) {
+      resizeObserver.observe(visualCardRef.current);
+    }
+    const handleResize = () => {
+      applyBloomGeometry();
+    };
+    window.addEventListener("resize", handleResize, { passive: true });
 
     // =======================================================================
     // 4. Mouse Parallax (Desktop only, spring-smoothed)
@@ -581,6 +845,7 @@ export function useHeroAnimation({
       arrowNudgeAnim?.pause();
       kenBurnsAnim?.pause();
       shimmerAnim?.pause();
+      ambientBloomAnim?.pause();
       floatingAnims.forEach((a) => a.pause());
       if (rAFRef.current) cancelAnimationFrame(rAFRef.current);
     };
@@ -589,6 +854,7 @@ export function useHeroAnimation({
       arrowNudgeAnim?.play();
       kenBurnsAnim?.play();
       shimmerAnim?.play();
+      ambientBloomAnim?.play();
       floatingAnims.forEach((a) => a.play());
       if (!isTouchRef.current) {
         rAFRef.current = requestAnimationFrame(updateParallax);
@@ -623,7 +889,14 @@ export function useHeroAnimation({
     // =======================================================================
     return () => {
       observer.disconnect();
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", handleResize);
+      if (handleBloomScroll) {
+        window.removeEventListener("scroll", handleBloomScroll);
+      }
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+
+      ambientBloomAnim?.pause();
 
       if (!isTouchRef.current) {
         window.removeEventListener("mousemove", handleMouseMove);

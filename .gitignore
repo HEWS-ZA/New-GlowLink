@@ -16,3 +16,7 @@ glowlink-native/
 glowlink-main/
 bun.lock*
 
+# Vercel deployment cache and config
+.vercel/
+
+
