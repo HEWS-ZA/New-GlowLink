@@ -3,12 +3,7 @@
   "framework": "vite",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "cleanUrls": true,
   "rewrites": [
-    {
-      "source": "/((?!assets/|favicon.png|icon.png|manifest.json|pwa-).*)/?",
-      "destination": "/index.html"
-    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
